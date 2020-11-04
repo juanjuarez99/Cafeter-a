@@ -13059,7 +13059,7 @@ render._withStripped = true
       
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/Añadir.vue":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirCafe.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13079,10 +13079,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var be = _config.default.direccion_backend;
 var _default = {
-  name: "Añadir",
-  props: ["direccion"],
+  name: "AñadirCafe",
   data: function data() {
     return {
+      nombre: "",
+      tamano: "",
+      precio: 0,
+      proveedor: "",
+      tamanosDisponibles: [],
+      proveedoresDisponibles: [],
       app: _store.default.app
     };
   },
@@ -13090,13 +13095,43 @@ var _default = {
     var _this = this;
 
     return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var resprove, provedores, res, tamanos;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 2;
+              return fetch("".concat(be, "/proveedores"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
 
-            case 1:
+            case 2:
+              resprove = _context.sent;
+              _context.next = 5;
+              return resprove.json();
+
+            case 5:
+              provedores = _context.sent;
+              _this.proveedoresDisponibles = provedores;
+              _context.next = 9;
+              return fetch("".concat(be, "/tamanos"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 9:
+              res = _context.sent;
+              _context.next = 12;
+              return res.json();
+
+            case 12:
+              tamanos = _context.sent;
+              _this.tamanosDisponibles = tamanos;
+
+            case 14:
             case "end":
               return _context.stop();
           }
@@ -13105,20 +13140,40 @@ var _default = {
     }))();
   },
   methods: {
-    test: function test() {
+    agregar: function agregar() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log('hi'); // this.app.connection.onopen = (event) => {
-
-                _this2.app.connection.send('hihi'); // }
-
+                _context2.next = 2;
+                return fetch("".concat(be, "/cafes"), {
+                  method: "POST",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombre: _this2.nombre,
+                    "tamaño": _this2.tamano,
+                    precio: _this2.precio,
+                    proveedor: _this2.proveedor
+                  })
+                });
 
               case 2:
+                res = _context2.sent;
+                _context2.next = 5;
+                return res.json();
+
+              case 5:
+                datos = _context2.sent;
+                console.log(datos);
+
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -13129,20 +13184,157 @@ var _default = {
   }
 };
 exports.default = _default;
-        var $c4c0e1 = exports.default || module.exports;
+        var $ba7b89 = exports.default || module.exports;
       
-      if (typeof $c4c0e1 === 'function') {
-        $c4c0e1 = $c4c0e1.options;
+      if (typeof $ba7b89 === 'function') {
+        $ba7b89 = $ba7b89.options;
       }
     
         /* template */
-        Object.assign($c4c0e1, (function () {
+        Object.assign($ba7b89, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { key: _vm.direccion }, [
-    _c("button", { on: { click: _vm.test } }, [_vm._v("Holi")])
+  return _c("div", [
+    _c("h1", [_vm._v("Añadir café")]),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Nombre de Cafe: ")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombre,
+          expression: "nombre"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombre },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombre = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Tamaño de Cafe: ")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.tamano,
+            expression: "tamano"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.tamano = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.tamanosDisponibles, function(tamano) {
+          return _c(
+            "option",
+            { key: tamano.cod_tamaño, domProps: { value: tamano.cod_tamaño } },
+            [_vm._v("\n      " + _vm._s(tamano.nombre) + "\n    ")]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Precio: ")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.precio,
+          expression: "precio"
+        }
+      ],
+      attrs: { type: "number" },
+      domProps: { value: _vm.precio },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.precio = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Proveedor: ")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.proveedor,
+            expression: "proveedor"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.proveedor = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.proveedoresDisponibles, function(proveedor) {
+          return _c(
+            "option",
+            {
+              key: proveedor.cod_proveedor,
+              domProps: { value: proveedor.cod_proveedor }
+            },
+            [_vm._v("\n      " + _vm._s(proveedor.nombre) + "\n    ")]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.agregar } }, [_vm._v("Agregar")])
   ])
 }
 var staticRenderFns = []
@@ -13152,7 +13344,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-c4c0e1",
+            _scopeId: "data-v-ba7b89",
             functional: undefined
           };
         })());
@@ -13165,9 +13357,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$c4c0e1', $c4c0e1);
+            api.createRecord('$ba7b89', $ba7b89);
           } else {
-            api.reload('$c4c0e1', $c4c0e1);
+            api.reload('$ba7b89', $ba7b89);
           }
         }
 
@@ -13196,7 +13388,7 @@ var _Dashboard = _interopRequireDefault(require("./componentes/Dashboard"));
 
 var _VerTodos = _interopRequireDefault(require("./componentes/VerTodos"));
 
-var _AAdir = _interopRequireDefault(require("./componentes/A\xF1adir"));
+var _AAdirCafe = _interopRequireDefault(require("./componentes/A\xF1adirCafe"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13222,14 +13414,11 @@ var Router = new _vueRouter.default({
       direccion: 'cafes'
     }
   }, {
+    path: '/cafes/anadir',
+    component: _AAdirCafe.default
+  }, {
     path: '/proveedores',
     component: _VerTodos.default,
-    props: {
-      direccion: 'proveedores'
-    }
-  }, {
-    path: '/proveedores/anadir',
-    component: _AAdir.default,
     props: {
       direccion: 'proveedores'
     }
@@ -13255,7 +13444,7 @@ var Router = new _vueRouter.default({
 });
 var _default = Router;
 exports.default = _default;
-},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/Añadir":"js/componentes/Añadir.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
+},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
 
         var $71a832 = exports.default || module.exports;
       

@@ -9,6 +9,7 @@ module.exports = function (app, connection){
     });
 })
 .post(function(req, res) {
+  console.log(req.body)
   let consulta = `INSERT INTO \`cafes\` (\`cod_cafe\`, \`nombre\`, \`tamaño\`, \`precio\`, \`proveedor\`) VALUES (NULL, '${req.body.nombre}', '${req.body.tamaño}', '${req.body.precio}', '${req.body.proveedor}');`
   connection.query(consulta, function(err, rows, fields) {
     if (err) {
