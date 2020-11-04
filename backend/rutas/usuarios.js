@@ -40,7 +40,10 @@ module.exports = function (app, connection) {
         if (err) {
           res.json(err)
         }
-        res.json(rows)
+        res.json(rows.map((usuario) => {
+          usuario["contraseña"] = undefined
+          return usuario
+        }))
       });
     })
     .put(function (req, res) {
