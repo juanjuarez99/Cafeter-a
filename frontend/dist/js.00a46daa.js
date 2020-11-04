@@ -13370,7 +13370,552 @@ render._withStripped = true
       
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/router.js":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirUsuarios.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "AñadirUsuario",
+  data: function data() {
+    return {
+      nombres: "",
+      apellidos: "",
+      usuario: "",
+      contra: "",
+      permisos: "",
+      app: _store.default.app
+    };
+  },
+  methods: {
+    agregar: function agregar() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fetch("".concat(be, "/usuarios"), {
+                  method: "POST",
+                  headers: {
+                    "x-token": _this.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombres: _this.nombres,
+                    apellidos: _this.apellidos,
+                    nombre_usuario: _this.usuario,
+                    contra: _this.contra,
+                    permisos: _this.permisos
+                  })
+                });
+
+              case 3:
+                res = _context.sent;
+                _context.next = 6;
+                return res.json();
+
+              case 6:
+                datos = _context.sent;
+                console.log(datos);
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 10]]);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $95718d = exports.default || module.exports;
+      
+      if (typeof $95718d === 'function') {
+        $95718d = $95718d.options;
+      }
+    
+        /* template */
+        Object.assign($95718d, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Añadir Usuarios")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombres de Usuario:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombres,
+          expression: "nombres"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombres },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombres = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Apellidos de Usuario:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.apellidos,
+          expression: "apellidos"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.apellidos },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.apellidos = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombre de Usuario:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.usuario,
+          expression: "usuario"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.usuario },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.usuario = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Contraseña:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.contra,
+          expression: "contra"
+        }
+      ],
+      attrs: { type: "password" },
+      domProps: { value: _vm.contra },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.contra = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Permisos:")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.agregar } }, [_vm._v("Agregar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$95718d', $95718d);
+          } else {
+            api.reload('$95718d', $95718d);
+          }
+        }
+
+        
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirProveedores.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "AñadirUsuario",
+  data: function data() {
+    return {
+      nombre: "",
+      app: _store.default.app
+    };
+  },
+  methods: {
+    agregar: function agregar() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fetch("".concat(be, "/proveedores"), {
+                  method: "POST",
+                  headers: {
+                    "x-token": _this.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombre: _this.nombre
+                  })
+                });
+
+              case 3:
+                res = _context.sent;
+                _context.next = 6;
+                return res.json();
+
+              case 6:
+                datos = _context.sent;
+                console.log(datos);
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 10]]);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $e8ac63 = exports.default || module.exports;
+      
+      if (typeof $e8ac63 === 'function') {
+        $e8ac63 = $e8ac63.options;
+      }
+    
+        /* template */
+        Object.assign($e8ac63, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Añadir Proveedores")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombre:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombre,
+          expression: "nombre"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombre },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombre = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.agregar } }, [_vm._v("Agregar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$e8ac63', $e8ac63);
+          } else {
+            api.reload('$e8ac63', $e8ac63);
+          }
+        }
+
+        
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirTamaños.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "AñadirUsuario",
+  data: function data() {
+    return {
+      nombre: "",
+      relacion_precio: "",
+      app: _store.default.app
+    };
+  },
+  methods: {
+    agregar: function agregar() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fetch("".concat(be, "/tamanos"), {
+                  method: "POST",
+                  headers: {
+                    "x-token": _this.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombre: _this.nombre,
+                    relacion_precio: _this.relacion_precio
+                  })
+                });
+
+              case 3:
+                res = _context.sent;
+                _context.next = 6;
+                return res.json();
+
+              case 6:
+                datos = _context.sent;
+                console.log(datos);
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 10]]);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $0d42da = exports.default || module.exports;
+      
+      if (typeof $0d42da === 'function') {
+        $0d42da = $0d42da.options;
+      }
+    
+        /* template */
+        Object.assign($0d42da, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Añadir Tamaños")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombre:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombre,
+          expression: "nombre"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombre },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombre = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Relacion Precio:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.relacion_precio,
+          expression: "relacion_precio"
+        }
+      ],
+      attrs: { type: "number", step: "0.1" },
+      domProps: { value: _vm.relacion_precio },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.relacion_precio = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.agregar } }, [_vm._v("Agregar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$0d42da', $0d42da);
+          } else {
+            api.reload('$0d42da', $0d42da);
+          }
+        }
+
+        
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/router.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13390,6 +13935,12 @@ var _VerTodos = _interopRequireDefault(require("./componentes/VerTodos"));
 
 var _AAdirCafe = _interopRequireDefault(require("./componentes/A\xF1adirCafe"));
 
+var _AAdirUsuarios = _interopRequireDefault(require("./componentes/A\xF1adirUsuarios"));
+
+var _AAdirProveedores = _interopRequireDefault(require("./componentes/A\xF1adirProveedores"));
+
+var _AAdirTamaOs = _interopRequireDefault(require("./componentes/A\xF1adirTama\xF1os"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue.default.use(_vueRouter.default);
@@ -13408,6 +13959,9 @@ var Router = new _vueRouter.default({
       direccion: 'usuarios'
     }
   }, {
+    path: '/usuarios/anadir',
+    component: _AAdirUsuarios.default
+  }, {
     path: '/cafes',
     component: _VerTodos.default,
     props: {
@@ -13423,11 +13977,17 @@ var Router = new _vueRouter.default({
       direccion: 'proveedores'
     }
   }, {
+    path: '/proveedores/anadir',
+    component: _AAdirProveedores.default
+  }, {
     path: '/tamanos',
     component: _VerTodos.default,
     props: {
       direccion: 'tamanos'
     }
+  }, {
+    path: '/tamanos/anadir',
+    component: _AAdirTamaOs.default
   }, {
     path: '/caja',
     component: _VerTodos.default,
@@ -13444,7 +14004,7 @@ var Router = new _vueRouter.default({
 });
 var _default = Router;
 exports.default = _default;
-},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
+},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
 
         var $71a832 = exports.default || module.exports;
       
@@ -13461,21 +14021,23 @@ exports.default = _default;
       _c(
         "li",
         [
-          _c("router-link", { attrs: { to: "usuarios" } }, [_vm._v("Usuarios")])
+          _c("router-link", { attrs: { to: "/usuarios" } }, [
+            _vm._v("Usuarios")
+          ])
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "li",
-        [_c("router-link", { attrs: { to: "cafes" } }, [_vm._v("Cafes")])],
+        [_c("router-link", { attrs: { to: "/cafes" } }, [_vm._v("Cafes")])],
         1
       ),
       _vm._v(" "),
       _c(
         "li",
         [
-          _c("router-link", { attrs: { to: "proveedores" } }, [
+          _c("router-link", { attrs: { to: "/proveedores" } }, [
             _vm._v("Proveedores")
           ])
         ],
@@ -13484,19 +14046,19 @@ exports.default = _default;
       _vm._v(" "),
       _c(
         "li",
-        [_c("router-link", { attrs: { to: "tamanos" } }, [_vm._v("Tamaños")])],
+        [_c("router-link", { attrs: { to: "/tamanos" } }, [_vm._v("Tamaños")])],
         1
       ),
       _vm._v(" "),
       _c(
         "li",
-        [_c("router-link", { attrs: { to: "caja" } }, [_vm._v("Caja")])],
+        [_c("router-link", { attrs: { to: "/caja" } }, [_vm._v("Caja")])],
         1
       ),
       _vm._v(" "),
       _c(
         "li",
-        [_c("router-link", { attrs: { to: "ventas" } }, [_vm._v("Ventas")])],
+        [_c("router-link", { attrs: { to: "/ventas" } }, [_vm._v("Ventas")])],
         1
       )
     ])

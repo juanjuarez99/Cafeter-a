@@ -16,8 +16,9 @@ module.exports = function (app, connection) {
     .post(async function (req, res) {
       let contraEncriptada;
       try {
-        contraEncriptada = await encriptarContra(req.body.contraseña)
+        contraEncriptada = await encriptarContra(req.body.contra)
       } catch(err) {
+        console.log(err)
         res.json({
           status: "error",
           msg: err
