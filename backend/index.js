@@ -25,10 +25,10 @@ app.set('clave', config.clave)
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'juan',
-  password: '123',
-  database: 'cafeteria'
+  host: config.IPDB,
+  user: config.DBUSER,
+  password: config.DBPASS,
+  database: config.DBNAME
 });
 
 app.use(cors())
