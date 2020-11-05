@@ -17,6 +17,8 @@ export default {
   data: () => ({
     nombre: "",
     app: Store.app,
+
+    original: {}
   }),
 
   async created() {
@@ -29,6 +31,7 @@ export default {
     const caf = await rescaf.json()
     console.log(caf)
     this.nombre = caf[0].nombre
+    this.original = caf[0]
     
   },
 
@@ -44,6 +47,7 @@ export default {
         },
         body: JSON.stringify({
           nombre: this.nombre,
+          original: this.original
         }),
       });
       const datos = await res.json();

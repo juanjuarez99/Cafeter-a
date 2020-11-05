@@ -21,6 +21,8 @@ export default {
     nombre: "",
     relacion_precio: "",
     app: Store.app,
+
+    original: {}
   }),
 
   async created() {
@@ -34,6 +36,7 @@ export default {
     console.log(caf)
     this.nombre = caf[0].nombre
     this.relacion_precio =caf[0].relacion_precio 
+    this.original = caf[0]
     
   },
 
@@ -49,6 +52,7 @@ export default {
         body: JSON.stringify({
           nombre: this.nombre,
           relacion_precio: this.relacion_precio,
+          original: this.original
         }),
       });
       const datos = await res.json();

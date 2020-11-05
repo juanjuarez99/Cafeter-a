@@ -28,7 +28,17 @@ module.exports = function (app, connection) {
       });
     })
     .put(function (req, res) {
-      let consulta = `UPDATE \`tamaños_cafe\` SET \`nombre\` = '${req.body.nombre}', \`relacion_precio\` = '${req.body.relacion_precio}' WHERE \`tamaños_cafe\`.\`cod_tamaño\` = ${req.params.id}`
+      let consulta = `UPDATE \`tamaños_cafe\` SET `
+      let actual = req.body.original
+
+      if (req.body.nombre && req.body.nombre != actual.nombre) {
+        consulta += `\`nombre\` = '${req.body.nombre}', `
+      }
+      if (req.body.relacion_precio && req.body.relacion_precio != actual.relacion_precio) {
+        consulta += `\`relacion_precio\` = '${req.body.relacion_precio}', `
+      }
+      consulta = consulta.replace(/, $/," ")
+      consulta += `WHERE \`tamaños_cafe\`.\`cod_tamaño\` = ${req.params.id}`
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

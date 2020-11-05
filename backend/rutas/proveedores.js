@@ -28,7 +28,15 @@ module.exports = function (app, connection) {
       });
     })
     .put(function (req, res) {
-      let consulta = `UPDATE \`proveedor\` SET \`nombre\` = '${req.body.nombre}' WHERE \`proveedor\`.\`cod_proveedor\` = ${req.params.id}`
+      let consulta = `UPDATE \`proveedor\` SET `
+      let actual = req.body.original
+
+      if (req.body.nombre && req.body.nombre != actual.nombre) {
+        consulta += `\`nombre\` = '${req.body.nombre}', `
+      }
+      consulta = consulta.replace(/, $/," ")
+      consulta += `WHERE \`proveedor\`.\`cod_proveedor\` = ${req.params.id}`
+      
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

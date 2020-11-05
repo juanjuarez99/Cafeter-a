@@ -15434,7 +15434,8 @@ var _default = {
   data: function data() {
     return {
       nombre: "",
-      app: _store.default.app
+      app: _store.default.app,
+      original: {}
     };
   },
   created: function created() {
@@ -15463,8 +15464,9 @@ var _default = {
               caf = _context.sent;
               console.log(caf);
               _this.nombre = caf[0].nombre;
+              _this.original = caf[0];
 
-            case 9:
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -15491,7 +15493,8 @@ var _default = {
                     "Content-Type": "application/json; charset=utf-8"
                   },
                   body: JSON.stringify({
-                    nombre: _this2.nombre
+                    nombre: _this2.nombre,
+                    original: _this2.original
                   })
                 });
 
@@ -15620,7 +15623,8 @@ var _default = {
     return {
       nombre: "",
       relacion_precio: "",
-      app: _store.default.app
+      app: _store.default.app,
+      original: {}
     };
   },
   created: function created() {
@@ -15650,8 +15654,9 @@ var _default = {
               console.log(caf);
               _this.nombre = caf[0].nombre;
               _this.relacion_precio = caf[0].relacion_precio;
+              _this.original = caf[0];
 
-            case 10:
+            case 11:
             case "end":
               return _context.stop();
           }
@@ -15679,7 +15684,8 @@ var _default = {
                   },
                   body: JSON.stringify({
                     nombre: _this2.nombre,
-                    relacion_precio: _this2.relacion_precio
+                    relacion_precio: _this2.relacion_precio,
+                    original: _this2.original
                   })
                 });
 
@@ -16744,7 +16750,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53320" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58714" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
