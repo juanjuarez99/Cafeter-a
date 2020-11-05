@@ -39,6 +39,8 @@ export default {
     cafesDisponibles: [],
     cajasDisponibles: [],
     app: Store.app,
+
+    original: {},
   }),
   async created() {
     this.app.connection = new WebSocket("ws://192.168.0.16:3001");
@@ -51,6 +53,7 @@ export default {
     this.cafe = ven[0].cafe;
     this.cantidad = ven[0].cantidad;
     this.caja = ven[0].identificador;
+    this.original = ven[0];
 
     const res = await fetch(`${be}/cafes`, {
       headers: {
@@ -80,11 +83,13 @@ export default {
           identificador: this.caja,
           cafe: this.cafe,
           cantidad: this.cantidad,
+
+          original: this.original,
         }),
       });
       const datos = await res.json();
       console.log(datos);
-      this.app.connection.send('hihi')
+      this.app.connection.send("hihi");
     },
   },
 };
