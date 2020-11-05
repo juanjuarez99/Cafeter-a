@@ -28,7 +28,17 @@ module.exports = function (app, connection) {
       });
     })
     .put(function (req, res) {
-      let consulta = `UPDATE \`caja\` SET \`usuario\` = '${req.body.usuario}', \`fecha\` = '${req.body.fecha}' WHERE \`caja\`.\`cod_caja\` = ${req.params.id}`
+      let consulta = `UPDATE \`caja\` SET `
+      let actual = req.body.original
+
+      if (req.body.usuario && req.body.usuario != actual.usuario) {
+        consulta += `\`usuario\` = '${req.body.usuario}', `
+      }
+      if (req.body.fecha && req.body.fecha != actual.fecha) {
+        consulta += `\`fecha\` = '${req.body.fecha}', `
+      }
+      consulta = consulta.replace(/, $/," ")
+      consulta += `WHERE \`caja\`.\`cod_caja\` = ${req.params.id}`
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

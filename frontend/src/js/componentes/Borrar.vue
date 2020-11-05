@@ -20,6 +20,9 @@ export default {
     confirmar: false,
     app: Store.app,
   }),
+  created() {
+    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+  },
   methods: {
     async borrar() {
       const res = await fetch(`${be}/${this.direccion}/${this.id}`, {
@@ -30,6 +33,7 @@ export default {
       });
       const conf = await res.json();
       console.log(conf);
+      this.app.connection.send('hihi')
     },
   },
 };

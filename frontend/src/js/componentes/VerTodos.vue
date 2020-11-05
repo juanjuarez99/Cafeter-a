@@ -1,5 +1,7 @@
 <template>
   <div :key="direccion">
+    <h1>{{ direccion }}</h1>
+    <router-link :to="`/${direccion}/anadir`">Añadir</router-link>
     <table>
       <thead>
         <th v-for="encabezado in encabezados" :key="encabezado">
@@ -12,8 +14,10 @@
             {{ dato[encabezado] }}
           </td>
           <td>
-            <Borrar :direccion="direccion" :id="dato[Object.keys(dato)[0]]"/>
+            <Borrar :direccion="direccion" :id="dato[Object.keys(dato)[0]]" />
           </td>
+          <td>
+            <router-link :to="`/${direccion}/${dato[Object.keys(dato)[0]]}/editar`">Editar</router-link></td>
         </tr>
       </tbody>
     </table>
@@ -24,7 +28,7 @@
 import config from "../config";
 const be = config.direccion_backend;
 import Store from "../store";
-import Borrar from "./Borrar"
+import Borrar from "./Borrar";
 
 export default {
   name: "VerTodos",

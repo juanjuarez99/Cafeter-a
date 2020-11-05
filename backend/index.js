@@ -28,7 +28,8 @@ var connection = mysql.createConnection({
   host: config.IPDB,
   user: config.DBUSER,
   password: config.DBPASS,
-  database: config.DBNAME
+  database: config.DBNAME,
+  multipleStatements: true
 });
 
 app.use(cors())

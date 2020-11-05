@@ -17,7 +17,7 @@ module.exports = function (app, connection) {
       let contraEncriptada;
       try {
         contraEncriptada = await encriptarContra(req.body.contra)
-      } catch(err) {
+      } catch (err) {
         console.log(err)
         res.json({
           status: "error",
@@ -36,6 +36,7 @@ module.exports = function (app, connection) {
 
   app.route('/usuarios/:id')
     .get(function (req, res) {
+
       connection.query(`SELECT * from usuarios WHERE cod_usuarios = ${req.params.id}`, function (err, rows, fields) {
         if (err) {
           res.json(err)
@@ -46,8 +47,23 @@ module.exports = function (app, connection) {
         }))
       });
     })
-    .put(function (req, res) {
-      let consulta = `UPDATE \`usuarios\` SET \`nombres\` = '${req.body.nombres}', \`apellidos\` = '${req.body.apellidos}', \`nombre_usuario\` = '${req.body.nombre_usuario}', \`contraseña\` = '${req.body.contraseña}', \`permisos\` = '${req.body.permisos}' WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
+    .put(async function (req, res) {
+      let contraEncriptada;
+      try {
+        contraEncriptada = await encriptarContra(req.body.contra)
+        
+      } catch (err) {
+        console.log(err)
+       /*  res.json({
+          status: "error",
+          msg: err
+        });
+        return */
+      }
+      let consulta = `UPDATE \`usuarios\` SET \`nombres\` = '${req.body.nombres}', \`apellidos\` = '${req.body.apellidos}', \`nombre_usuario\` = '${req.body.nombre_usuario}', \`contraseña\` = '${contraEncriptada}', \`permisos\` = '${req.body.permisos}' WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
+      if (!contraEncriptada) {
+        consulta = `UPDATE \`usuarios\` SET \`nombres\` = '${req.body.nombres}', \`apellidos\` = '${req.body.apellidos}', \`nombre_usuario\` = '${req.body.nombre_usuario}', \`permisos\` = '${req.body.permisos}' WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
+      }
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

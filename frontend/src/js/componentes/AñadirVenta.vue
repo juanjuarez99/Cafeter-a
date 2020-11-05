@@ -41,6 +41,7 @@ export default {
     app: Store.app,
   }),
   async created() {
+    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
     const res = await fetch(`${be}/cafes`, {
       headers: {
         "x-token": this.app.token,
@@ -73,6 +74,7 @@ export default {
       });
       const datos = await res.json();
       console.log(datos);
+      this.app.connection.send('hihi')
     },
   },
 };

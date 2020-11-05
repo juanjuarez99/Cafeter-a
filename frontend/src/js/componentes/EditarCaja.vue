@@ -28,8 +28,11 @@ export default {
     fecha: "",
     usuariosDisponibles: [],
     app: Store.app,
+
+    original: {}
   }),
   async created() {
+    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
     const rescaj = await fetch(`${be}/caja/${this.$route.params.id}`, {
       headers: {
         "x-token": this.app.token,
@@ -38,6 +41,7 @@ export default {
     const caj = await rescaj.json();
     this.usuario = caj[0].usuario;
     this.fecha = caj[0].fecha.split("T")[0];
+    this.original = caj[0]
 
     const res = await fetch(`${be}/usuarios`, {
       headers: {
@@ -58,10 +62,12 @@ export default {
         body: JSON.stringify({
           usuario: this.usuario,
           fecha: this.fecha,
+          original: this.original
         }),
       });
       const datos = await res.json();
       console.log(datos);
+      this.app.connection.send('hihi')
     },
   },
 };

@@ -33,6 +33,7 @@ export default {
 
   methods: {
     async agregar() {
+      this.app.connection = new WebSocket("ws://192.168.0.16:3001");
         try {
       const res = await fetch(`${be}/usuarios`, {
         method: "POST",
@@ -50,6 +51,7 @@ export default {
       });
       const datos = await res.json();
       console.log(datos); 
+      this.app.connection.send('hihi')
       } catch(err) {
           console.log(err)
       }

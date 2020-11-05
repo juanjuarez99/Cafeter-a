@@ -47,8 +47,11 @@ export default {
     tamanosDisponibles: [],
     proveedoresDisponibles: [],
     app: Store.app,
+
+    original: {}
   }),
   async created() {
+    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
     const rescaf = await fetch(`${be}/cafes/${this.$route.params.id}`, {
       headers: {
         "x-token": this.app.token,
@@ -61,7 +64,7 @@ export default {
     this.precio = caf[0].precio
     this.proveedor = caf[0].proveedor
 
-
+    this.original = caf[0]
 
     const resprove = await fetch(`${be}/proveedores`, {
       headers: {
@@ -92,11 +95,14 @@ export default {
             nombre: this.nombre,
             "tamaño": this.tamano,
             precio: this.precio,
-            proveedor: this.proveedor
+            proveedor: this.proveedor,
+
+            original: this.original
         })
       });
       const datos = await res.json()
       console.log(datos)
+      this.app.connection.send('hihi')
     },
   },
 };

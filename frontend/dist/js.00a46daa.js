@@ -12905,6 +12905,9 @@ var _default = {
       app: _store.default.app
     };
   },
+  created: function created() {
+    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+  },
   methods: {
     borrar: function borrar() {
       var _this = this;
@@ -12932,7 +12935,9 @@ var _default = {
                 conf = _context.sent;
                 console.log(conf);
 
-              case 7:
+                _this.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context.stop();
             }
@@ -13145,53 +13150,85 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { key: _vm.direccion }, [
-    _c("table", [
-      _c(
-        "thead",
-        _vm._l(_vm.encabezados, function(encabezado) {
-          return _c("th", { key: encabezado }, [
-            _vm._v("\n        " + _vm._s(encabezado) + "\n      ")
-          ])
-        }),
-        0
-      ),
+  return _c(
+    "div",
+    { key: _vm.direccion },
+    [
+      _c("h1", [_vm._v(_vm._s(_vm.direccion))]),
       _vm._v(" "),
-      _c(
-        "tbody",
-        _vm._l(_vm.datos, function(dato) {
-          return _c(
-            "tr",
-            { key: dato[_vm.encabezados[0]] },
-            [
-              _vm._l(_vm.encabezados, function(encabezado) {
-                return _c("td", { key: encabezado }, [
-                  _vm._v(
-                    "\n          " + _vm._s(dato[encabezado]) + "\n        "
-                  )
-                ])
-              }),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c("Borrar", {
-                    attrs: {
-                      direccion: _vm.direccion,
-                      id: dato[Object.keys(dato)[0]]
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            2
-          )
-        }),
-        0
-      )
-    ])
-  ])
+      _c("router-link", { attrs: { to: "/" + _vm.direccion + "/anadir" } }, [
+        _vm._v("Añadir")
+      ]),
+      _vm._v(" "),
+      _c("table", [
+        _c(
+          "thead",
+          _vm._l(_vm.encabezados, function(encabezado) {
+            return _c("th", { key: encabezado }, [
+              _vm._v("\n        " + _vm._s(encabezado) + "\n      ")
+            ])
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.datos, function(dato) {
+            return _c(
+              "tr",
+              { key: dato[_vm.encabezados[0]] },
+              [
+                _vm._l(_vm.encabezados, function(encabezado) {
+                  return _c("td", { key: encabezado }, [
+                    _vm._v(
+                      "\n          " + _vm._s(dato[encabezado]) + "\n        "
+                    )
+                  ])
+                }),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c("Borrar", {
+                      attrs: {
+                        direccion: _vm.direccion,
+                        id: dato[Object.keys(dato)[0]]
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to:
+                            "/" +
+                            _vm.direccion +
+                            "/" +
+                            dato[Object.keys(dato)[0]] +
+                            "/editar"
+                        }
+                      },
+                      [_vm._v("Editar")]
+                    )
+                  ],
+                  1
+                )
+              ],
+              2
+            )
+          }),
+          0
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -13267,38 +13304,39 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/proveedores"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               resprove = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return resprove.json();
 
-            case 5:
+            case 6:
               provedores = _context.sent;
               _this.proveedoresDisponibles = provedores;
-              _context.next = 9;
+              _context.next = 10;
               return fetch("".concat(be, "/tamanos"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 9:
+            case 10:
               res = _context.sent;
-              _context.next = 12;
+              _context.next = 13;
               return res.json();
 
-            case 12:
+            case 13:
               tamanos = _context.sent;
               _this.tamanosDisponibles = tamanos;
 
-            case 14:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -13340,7 +13378,9 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-              case 7:
+                _this2.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -13575,23 +13615,24 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/usuarios"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               res = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return res.json();
 
-            case 5:
+            case 6:
               usuarios = _context.sent;
               _this.usuariosDisponibles = usuarios;
 
-            case 7:
+            case 8:
             case "end":
               return _context.stop();
           }
@@ -13631,7 +13672,9 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-              case 7:
+                _this2.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -13802,38 +13845,39 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/cafes"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               res = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return res.json();
 
-            case 5:
+            case 6:
               cafes = _context.sent;
               _this.cafesDisponibles = cafes;
-              _context.next = 9;
+              _context.next = 10;
               return fetch("".concat(be, "/caja"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 9:
+            case 10:
               resCajas = _context.sent;
-              _context.next = 12;
+              _context.next = 13;
               return resCajas.json();
 
-            case 12:
+            case 13:
               cajas = _context.sent;
               _this.cajasDisponibles = cajas;
 
-            case 14:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -13874,7 +13918,9 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-              case 7:
+                _this2.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -14082,8 +14128,9 @@ var _default = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
+                _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+                _context.prev = 1;
+                _context.next = 4;
                 return fetch("".concat(be, "/usuarios"), {
                   method: "POST",
                   headers: {
@@ -14099,28 +14146,31 @@ var _default = {
                   })
                 });
 
-              case 3:
+              case 4:
                 res = _context.sent;
-                _context.next = 6;
+                _context.next = 7;
                 return res.json();
 
-              case 6:
+              case 7:
                 datos = _context.sent;
                 console.log(datos);
-                _context.next = 13;
+
+                _this.app.connection.send('hihi');
+
+                _context.next = 15;
                 break;
 
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](0);
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](1);
                 console.log(_context.t0);
 
-              case 13:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 10]]);
+        }, _callee, null, [[1, 12]]);
       }))();
     }
   }
@@ -14304,8 +14354,9 @@ var _default = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
+                _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+                _context.prev = 1;
+                _context.next = 4;
                 return fetch("".concat(be, "/proveedores"), {
                   method: "POST",
                   headers: {
@@ -14317,28 +14368,31 @@ var _default = {
                   })
                 });
 
-              case 3:
+              case 4:
                 res = _context.sent;
-                _context.next = 6;
+                _context.next = 7;
                 return res.json();
 
-              case 6:
+              case 7:
                 datos = _context.sent;
                 console.log(datos);
-                _context.next = 13;
+
+                _this.app.connection.send('hihi');
+
+                _context.next = 15;
                 break;
 
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](0);
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](1);
                 console.log(_context.t0);
 
-              case 13:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 10]]);
+        }, _callee, null, [[1, 12]]);
       }))();
     }
   }
@@ -14452,8 +14506,9 @@ var _default = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
+                _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+                _context.prev = 1;
+                _context.next = 4;
                 return fetch("".concat(be, "/tamanos"), {
                   method: "POST",
                   headers: {
@@ -14466,28 +14521,31 @@ var _default = {
                   })
                 });
 
-              case 3:
+              case 4:
                 res = _context.sent;
-                _context.next = 6;
+                _context.next = 7;
                 return res.json();
 
-              case 6:
+              case 7:
                 datos = _context.sent;
                 console.log(datos);
-                _context.next = 13;
+
+                _this.app.connection.send('hihi');
+
+                _context.next = 15;
                 break;
 
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](0);
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](1);
                 console.log(_context.t0);
 
-              case 13:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 10]]);
+        }, _callee, null, [[1, 12]]);
       }))();
     }
   }
@@ -14778,7 +14836,8 @@ var _default = {
       proveedor: "",
       tamanosDisponibles: [],
       proveedoresDisponibles: [],
-      app: _store.default.app
+      app: _store.default.app,
+      original: {}
     };
   },
   created: function created() {
@@ -14790,57 +14849,59 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/cafes/").concat(_this.$route.params.id), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               rescaf = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return rescaf.json();
 
-            case 5:
+            case 6:
               caf = _context.sent;
               console.log(caf);
               _this.nombre = caf[0].nombre;
               _this.tamano = caf[0]["tamaño"];
               _this.precio = caf[0].precio;
               _this.proveedor = caf[0].proveedor;
-              _context.next = 13;
+              _this.original = caf[0];
+              _context.next = 15;
               return fetch("".concat(be, "/proveedores"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 13:
+            case 15:
               resprove = _context.sent;
-              _context.next = 16;
+              _context.next = 18;
               return resprove.json();
 
-            case 16:
+            case 18:
               provedores = _context.sent;
               _this.proveedoresDisponibles = provedores;
-              _context.next = 20;
+              _context.next = 22;
               return fetch("".concat(be, "/tamanos"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 20:
+            case 22:
               res = _context.sent;
-              _context.next = 23;
+              _context.next = 25;
               return res.json();
 
-            case 23:
+            case 25:
               tamanos = _context.sent;
               _this.tamanosDisponibles = tamanos;
 
-            case 25:
+            case 27:
             case "end":
               return _context.stop();
           }
@@ -14869,7 +14930,8 @@ var _default = {
                     nombre: _this2.nombre,
                     "tamaño": _this2.tamano,
                     precio: _this2.precio,
-                    proveedor: _this2.proveedor
+                    proveedor: _this2.proveedor,
+                    original: _this2.original
                   })
                 });
 
@@ -14882,7 +14944,9 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-              case 7:
+                _this2.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -15119,19 +15183,20 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/usuarios/").concat(_this.$route.params.id), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               rescaf = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return rescaf.json();
 
-            case 5:
+            case 6:
               caf = _context.sent;
               console.log(caf);
               _this.nombres = caf[0].nombres;
@@ -15139,7 +15204,7 @@ var _default = {
               _this.usuario = caf[0].nombre_usuario;
               _this.permisos = caf[0].permisos;
 
-            case 11:
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -15182,20 +15247,23 @@ var _default = {
               case 6:
                 datos = _context2.sent;
                 console.log(datos);
-                _context2.next = 13;
+
+                _this2.app.connection.send('hihi');
+
+                _context2.next = 14;
                 break;
 
-              case 10:
-                _context2.prev = 10;
+              case 11:
+                _context2.prev = 11;
                 _context2.t0 = _context2["catch"](0);
                 console.log(_context2.t0);
 
-              case 13:
+              case 14:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 10]]);
+        }, _callee2, null, [[0, 11]]);
       }))();
     }
   }
@@ -15378,24 +15446,25 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/proveedores/").concat(_this.$route.params.id), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               rescaf = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return rescaf.json();
 
-            case 5:
+            case 6:
               caf = _context.sent;
               console.log(caf);
               _this.nombre = caf[0].nombre;
 
-            case 8:
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -15434,20 +15503,23 @@ var _default = {
               case 6:
                 datos = _context2.sent;
                 console.log(datos);
-                _context2.next = 13;
+
+                _this2.app.connection.send('hihi');
+
+                _context2.next = 14;
                 break;
 
-              case 10:
-                _context2.prev = 10;
+              case 11:
+                _context2.prev = 11;
                 _context2.t0 = _context2["catch"](0);
                 console.log(_context2.t0);
 
-              case 13:
+              case 14:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 10]]);
+        }, _callee2, null, [[0, 11]]);
       }))();
     }
   }
@@ -15560,25 +15632,26 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/tamanos/").concat(_this.$route.params.id), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               rescaf = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return rescaf.json();
 
-            case 5:
+            case 6:
               caf = _context.sent;
               console.log(caf);
               _this.nombre = caf[0].nombre;
               _this.relacion_precio = caf[0].relacion_precio;
 
-            case 9:
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -15618,20 +15691,23 @@ var _default = {
               case 6:
                 datos = _context2.sent;
                 console.log(datos);
-                _context2.next = 13;
+
+                _this2.app.connection.send('hihi');
+
+                _context2.next = 14;
                 break;
 
-              case 10:
-                _context2.prev = 10;
+              case 11:
+                _context2.prev = 11;
                 _context2.t0 = _context2["catch"](0);
                 console.log(_context2.t0);
 
-              case 13:
+              case 14:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 10]]);
+        }, _callee2, null, [[0, 11]]);
       }))();
     }
   }
@@ -15756,7 +15832,8 @@ var _default = {
       usuario: "",
       fecha: "",
       usuariosDisponibles: [],
-      app: _store.default.app
+      app: _store.default.app,
+      original: {}
     };
   },
   created: function created() {
@@ -15768,39 +15845,41 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/caja/").concat(_this.$route.params.id), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               rescaj = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return rescaj.json();
 
-            case 5:
+            case 6:
               caj = _context.sent;
               _this.usuario = caj[0].usuario;
               _this.fecha = caj[0].fecha.split("T")[0];
-              _context.next = 10;
+              _this.original = caj[0];
+              _context.next = 12;
               return fetch("".concat(be, "/usuarios"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 10:
+            case 12:
               res = _context.sent;
-              _context.next = 13;
+              _context.next = 15;
               return res.json();
 
-            case 13:
+            case 15:
               usuarios = _context.sent;
               _this.usuariosDisponibles = usuarios;
 
-            case 15:
+            case 17:
             case "end":
               return _context.stop();
           }
@@ -15827,7 +15906,8 @@ var _default = {
                   },
                   body: JSON.stringify({
                     usuario: _this2.usuario,
-                    fecha: _this2.fecha
+                    fecha: _this2.fecha,
+                    original: _this2.original
                   })
                 });
 
@@ -15840,7 +15920,9 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-              case 7:
+                _this2.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -16011,55 +16093,56 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _context.next = 3;
               return fetch("".concat(be, "/ventas/").concat(_this.$route.params.id), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 2:
+            case 3:
               resven = _context.sent;
-              _context.next = 5;
+              _context.next = 6;
               return resven.json();
 
-            case 5:
+            case 6:
               ven = _context.sent;
               _this.cafe = ven[0].cafe;
               _this.cantidad = ven[0].cantidad;
               _this.caja = ven[0].identificador;
-              _context.next = 11;
+              _context.next = 12;
               return fetch("".concat(be, "/cafes"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 11:
+            case 12:
               res = _context.sent;
-              _context.next = 14;
+              _context.next = 15;
               return res.json();
 
-            case 14:
+            case 15:
               cafes = _context.sent;
               _this.cafesDisponibles = cafes;
-              _context.next = 18;
+              _context.next = 19;
               return fetch("".concat(be, "/caja"), {
                 headers: {
                   "x-token": _this.app.token
                 }
               });
 
-            case 18:
+            case 19:
               resCajas = _context.sent;
-              _context.next = 21;
+              _context.next = 22;
               return resCajas.json();
 
-            case 21:
+            case 22:
               cajas = _context.sent;
               _this.cajasDisponibles = cajas;
 
-            case 23:
+            case 24:
             case "end":
               return _context.stop();
           }
@@ -16100,7 +16183,9 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-              case 7:
+                _this2.app.connection.send('hihi');
+
+              case 8:
               case "end":
                 return _context2.stop();
             }

@@ -31,6 +31,7 @@ export default {
     app: Store.app,
   }),
 async created() {
+  this.app.connection = new WebSocket("ws://192.168.0.16:3001");
     const rescaf = await fetch(`${be}/usuarios/${this.$route.params.id}`, {
       headers: {
         "x-token": this.app.token,
@@ -62,6 +63,7 @@ async created() {
       });
       const datos = await res.json();
       console.log(datos); 
+      this.app.connection.send('hihi')
       } catch(err) {
           console.log(err)
       }
