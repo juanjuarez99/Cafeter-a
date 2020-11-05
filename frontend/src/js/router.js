@@ -15,7 +15,8 @@ import AñadirTamaños from './componentes/AñadirTamaños'
 import VerUno from './componentes/VerUno'
 import EditarCafe from './componentes/EditarCafe'
 import EditarUsuarios from './componentes/EditarUsuarios'
-
+import EditarCaja from './componentes/EditarCaja'
+import EditarVenta from './componentes/EditarVenta'
 
 const Router = new VueRouter({
   routes: [
@@ -38,14 +39,14 @@ const Router = new VueRouter({
     {path: '/caja', component: VerTodos, props: {direccion: 'caja'}},
     { path: '/caja/anadir', component: AñadirCaja },
     {path: '/caja/:id', component: VerUno, props: { direccion: 'caja'}},
+    {path: '/caja/:id/editar', component: EditarCaja},
     {path: '/ventas', component: VerTodos, props: {direccion: 'ventas'}},
     { path: '/ventas/anadir', component: AñadirVenta },
     {path: '/ventas/:id', component: VerUno, props: { direccion: 'ventas'}},
+    {path: '/ventas/:id/editar', component: EditarVenta},
     { path: '/', component: Login },
     { path: '/dashboard', component: Dashboard },
-
   ],
 });
 
 export default Router;
-
