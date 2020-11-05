@@ -13,6 +13,8 @@ import AñadirUsuarios from './componentes/AñadirUsuarios'
 import AñadirProveedores from './componentes/AñadirProveedores'
 import AñadirTamaños from './componentes/AñadirTamaños'
 import VerUno from './componentes/VerUno'
+import EditarCafe from './componentes/EditarCafe'
+
 
 const Router = new VueRouter({
   routes: [
@@ -24,6 +26,7 @@ const Router = new VueRouter({
     {path: '/cafes', component: VerTodos, props: {direccion: 'cafes'}},
     {path: '/cafes/anadir', component: AñadirCafe},
     {path: '/cafes/:id', component: VerUno, props: { direccion: 'cafes'}},
+    {path: '/cafes/:id/editar', component: EditarCafe, },
     {path: '/proveedores', component: VerTodos, props: {direccion: 'proveedores'}},
     {path: '/proveedores/anadir', component: AñadirProveedores},
     {path: '/proveedores/:id', component: VerUno, props: { direccion: 'proveedores'}},

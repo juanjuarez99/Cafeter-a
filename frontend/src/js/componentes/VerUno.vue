@@ -1,9 +1,9 @@
 <template>
   <div :key="direccion">
-      <template v-for="encabezado in encabezados">
+      <div v-for="encabezado in encabezados" :key="encabezado">
           <h1>{{encabezado}}</h1>
           <p>{{datos[0][encabezado]}}</p>
-      </template>
+      </div>
   </div>
 </template>
 

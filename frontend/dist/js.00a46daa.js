@@ -14539,16 +14539,14 @@ exports.default = _default;
   return _c(
     "div",
     { key: _vm.direccion },
-    [
-      _vm._l(_vm.encabezados, function(encabezado) {
-        return [
-          _c("h1", [_vm._v(_vm._s(encabezado))]),
-          _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.datos[0][encabezado]))])
-        ]
-      })
-    ],
-    2
+    _vm._l(_vm.encabezados, function(encabezado) {
+      return _c("div", { key: encabezado }, [
+        _c("h1", [_vm._v(_vm._s(encabezado))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.datos[0][encabezado]))])
+      ])
+    }),
+    0
   )
 }
 var staticRenderFns = []
@@ -14574,6 +14572,336 @@ render._withStripped = true
             api.createRecord('$af7721', $af7721);
           } else {
             api.reload('$af7721', $af7721);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarCafe.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "EditarCafe",
+  data: function data() {
+    return {
+      nombre: "",
+      tamano: "",
+      precio: 0,
+      proveedor: "",
+      tamanosDisponibles: [],
+      proveedoresDisponibles: [],
+      app: _store.default.app
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var rescaf, caf, resprove, provedores, res, tamanos;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("".concat(be, "/cafes/").concat(_this.$route.params.id), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 2:
+              rescaf = _context.sent;
+              _context.next = 5;
+              return rescaf.json();
+
+            case 5:
+              caf = _context.sent;
+              console.log(caf);
+              _this.nombre = caf[0].nombre;
+              _this.tamano = caf[0]["tamaño"];
+              _this.precio = caf[0].precio;
+              _this.proveedor = caf[0].proveedor;
+              _context.next = 13;
+              return fetch("".concat(be, "/proveedores"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 13:
+              resprove = _context.sent;
+              _context.next = 16;
+              return resprove.json();
+
+            case 16:
+              provedores = _context.sent;
+              _this.proveedoresDisponibles = provedores;
+              _context.next = 20;
+              return fetch("".concat(be, "/tamanos"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 20:
+              res = _context.sent;
+              _context.next = 23;
+              return res.json();
+
+            case 23:
+              tamanos = _context.sent;
+              _this.tamanosDisponibles = tamanos;
+
+            case 25:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    guardar: function guardar() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return fetch("".concat(be, "/cafes/").concat(_this2.$route.params.id), {
+                  method: "PUT",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombre: _this2.nombre,
+                    "tamaño": _this2.tamano,
+                    precio: _this2.precio,
+                    proveedor: _this2.proveedor
+                  })
+                });
+
+              case 2:
+                res = _context2.sent;
+                _context2.next = 5;
+                return res.json();
+
+              case 5:
+                datos = _context2.sent;
+                console.log(datos);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $47c62b = exports.default || module.exports;
+      
+      if (typeof $47c62b === 'function') {
+        $47c62b = $47c62b.options;
+      }
+    
+        /* template */
+        Object.assign($47c62b, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Editar café")]),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Nombre de Cafe: ")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombre,
+          expression: "nombre"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombre },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombre = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Tamaño de Cafe: ")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.tamano,
+            expression: "tamano"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.tamano = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.tamanosDisponibles, function(tamano) {
+          return _c(
+            "option",
+            { key: tamano.cod_tamaño, domProps: { value: tamano.cod_tamaño } },
+            [_vm._v("\n      " + _vm._s(tamano.nombre) + "\n    ")]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Precio: ")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.precio,
+          expression: "precio"
+        }
+      ],
+      attrs: { type: "number" },
+      domProps: { value: _vm.precio },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.precio = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v(" Proveedor: ")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.proveedor,
+            expression: "proveedor"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.proveedor = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.proveedoresDisponibles, function(proveedor) {
+          return _c(
+            "option",
+            {
+              key: proveedor.cod_proveedor,
+              domProps: { value: proveedor.cod_proveedor }
+            },
+            [_vm._v("\n      " + _vm._s(proveedor.nombre) + "\n    ")]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.guardar } }, [_vm._v("Guardar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-47c62b",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$47c62b', $47c62b);
+          } else {
+            api.reload('$47c62b', $47c62b);
           }
         }
 
@@ -14616,6 +14944,8 @@ var _AAdirTamaOs = _interopRequireDefault(require("./componentes/A\xF1adirTama\x
 
 var _VerUno = _interopRequireDefault(require("./componentes/VerUno"));
 
+var _EditarCafe = _interopRequireDefault(require("./componentes/EditarCafe"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue.default.use(_vueRouter.default);
@@ -14657,6 +14987,9 @@ var Router = new _vueRouter.default({
     props: {
       direccion: 'cafes'
     }
+  }, {
+    path: '/cafes/:id/editar',
+    component: _EditarCafe.default
   }, {
     path: '/proveedores',
     component: _VerTodos.default,
@@ -14727,7 +15060,7 @@ var Router = new _vueRouter.default({
 });
 var _default = Router;
 exports.default = _default;
-},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirCaja":"js/componentes/AñadirCaja.vue","./componentes/AñadirVenta":"js/componentes/AñadirVenta.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue","./componentes/VerUno":"js/componentes/VerUno.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
+},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirCaja":"js/componentes/AñadirCaja.vue","./componentes/AñadirVenta":"js/componentes/AñadirVenta.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue","./componentes/VerUno":"js/componentes/VerUno.vue","./componentes/EditarCafe":"js/componentes/EditarCafe.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
 
         var $71a832 = exports.default || module.exports;
       
@@ -14946,7 +15279,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59065" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51979" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
