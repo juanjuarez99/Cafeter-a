@@ -15,6 +15,8 @@ import AñadirTamaños from './componentes/AñadirTamaños'
 import VerUno from './componentes/VerUno'
 import EditarCafe from './componentes/EditarCafe'
 import EditarUsuarios from './componentes/EditarUsuarios'
+import EditarProveedores from './componentes/EditarProveedores'
+import EditarTamaños from './componentes/EditarTamaños'
 import EditarCaja from './componentes/EditarCaja'
 import EditarVenta from './componentes/EditarVenta'
 
@@ -33,9 +35,11 @@ const Router = new VueRouter({
     {path: '/proveedores', component: VerTodos, props: {direccion: 'proveedores'}},
     {path: '/proveedores/anadir', component: AñadirProveedores},
     {path: '/proveedores/:id', component: VerUno, props: { direccion: 'proveedores'}},
+    {path: '/proveedores/:id/editar', component: EditarProveedores, },
     {path: '/tamanos', component: VerTodos, props: {direccion: 'tamanos'}},
     {path: '/tamanos/anadir', component: AñadirTamaños},
     {path: '/tamanos/:id', component: VerUno, props: { direccion: 'tamanos'}},
+    {path: '/tamanos/:id/editar', component: EditarTamaños, },
     {path: '/caja', component: VerTodos, props: {direccion: 'caja'}},
     { path: '/caja/anadir', component: AñadirCaja },
     {path: '/caja/:id', component: VerUno, props: { direccion: 'caja'}},

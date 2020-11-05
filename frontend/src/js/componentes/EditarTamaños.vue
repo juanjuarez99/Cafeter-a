@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>Añadir Tamaños</h1>
+    <h1>editar Tamaños</h1>
     <label>Nombre:</label>
     <input type="text" v-model="nombre" />
     <label>Relacion Precio:</label>
     <input type="number" step="0.1" v-model="relacion_precio" />
-    <button @click="agregar">Agregar</button>
+    <button @click="guardar">Guardar</button>
   </div>
 </template>>
 
@@ -15,7 +15,7 @@ const be = config.direccion_backend;
 import Store from "../store";
 
 export default {
-  name: "AñadirTamaños",
+  name: "EditarTamaños",
   
   data: () => ({
     nombre: "",
@@ -23,11 +23,24 @@ export default {
     app: Store.app,
   }),
 
+  async created() {
+    const rescaf = await fetch(`${be}/tamanos/${this.$route.params.id}`, {
+      headers: {
+        "x-token": this.app.token,
+      },
+    })
+    const caf = await rescaf.json()
+    console.log(caf)
+    this.nombre = caf[0].nombre
+    this.relacion_precio =caf[0].relacion_precio 
+    
+  },
+
   methods: {
-    async agregar() {
+    async guardar() {
         try {
-      const res = await fetch(`${be}/tamanos`, {
-        method: "POST",
+      const res = await fetch(`${be}/tamanos/${this.$route.params.id}`, {
+        method: "PUT",
         headers: {
           "x-token": this.app.token,
           "Content-Type": "application/json; charset=utf-8",

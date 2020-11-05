@@ -12877,7 +12877,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/VerTodos.vue":[function(require,module,exports) {
+},{"_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/Borrar.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12897,8 +12897,158 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var be = _config.default.direccion_backend;
 var _default = {
+  name: "Borrar",
+  props: ["direccion", "id"],
+  data: function data() {
+    return {
+      confirmar: false,
+      app: _store.default.app
+    };
+  },
+  methods: {
+    borrar: function borrar() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var res, conf;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch("".concat(be, "/").concat(_this.direccion, "/").concat(_this.id), {
+                  method: "DELETE",
+                  headers: {
+                    "x-token": _this.app.token
+                  }
+                });
+
+              case 2:
+                res = _context.sent;
+                _context.next = 5;
+                return res.json();
+
+              case 5:
+                conf = _context.sent;
+                console.log(conf);
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $7da26b = exports.default || module.exports;
+      
+      if (typeof $7da26b === 'function') {
+        $7da26b = $7da26b.options;
+      }
+    
+        /* template */
+        Object.assign($7da26b, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            _vm.confirmar = true
+          }
+        }
+      },
+      [_vm._v("Borrar")]
+    ),
+    _vm._v(" "),
+    _vm.confirmar
+      ? _c("div", [
+          _c("p", [_vm._v("¿Seguro que quieres borrar?")]),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.borrar } }, [_vm._v("Si")]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              on: {
+                click: function($event) {
+                  _vm.confirmar = false
+                }
+              }
+            },
+            [_vm._v("No")]
+          )
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-7da26b",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$7da26b', $7da26b);
+          } else {
+            api.reload('$7da26b', $7da26b);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/VerTodos.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+var _Borrar = _interopRequireDefault(require("./Borrar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
   name: "VerTodos",
   props: ["direccion"],
+  components: {
+    Borrar: _Borrar.default
+  },
   data: function data() {
     return {
       datos: [],
@@ -13013,12 +13163,29 @@ exports.default = _default;
           return _c(
             "tr",
             { key: dato[_vm.encabezados[0]] },
-            _vm._l(_vm.encabezados, function(encabezado) {
-              return _c("td", { key: encabezado }, [
-                _vm._v("\n          " + _vm._s(dato[encabezado]) + "\n        ")
-              ])
-            }),
-            0
+            [
+              _vm._l(_vm.encabezados, function(encabezado) {
+                return _c("td", { key: encabezado }, [
+                  _vm._v(
+                    "\n          " + _vm._s(dato[encabezado]) + "\n        "
+                  )
+                ])
+              }),
+              _vm._v(" "),
+              _c(
+                "td",
+                [
+                  _c("Borrar", {
+                    attrs: {
+                      direccion: _vm.direccion,
+                      id: dato[Object.keys(dato)[0]]
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            2
           )
         }),
         0
@@ -13059,7 +13226,7 @@ render._withStripped = true
       
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirCafe.vue":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","./Borrar":"js/componentes/Borrar.vue","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirCafe.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14120,7 +14287,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var be = _config.default.direccion_backend;
 var _default = {
-  name: "AñadirUsuario",
+  name: "AñadirProveedores",
   data: function data() {
     return {
       nombre: "",
@@ -14267,7 +14434,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var be = _config.default.direccion_backend;
 var _default = {
-  name: "AñadirUsuario",
+  name: "AñadirTamaños",
   data: function data() {
     return {
       nombre: "",
@@ -15175,7 +15342,932 @@ render._withStripped = true
         
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/router.js":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarProveedores.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "EditarProveedores",
+  data: function data() {
+    return {
+      nombre: "",
+      app: _store.default.app
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var rescaf, caf;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("".concat(be, "/proveedores/").concat(_this.$route.params.id), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 2:
+              rescaf = _context.sent;
+              _context.next = 5;
+              return rescaf.json();
+
+            case 5:
+              caf = _context.sent;
+              console.log(caf);
+              _this.nombre = caf[0].nombre;
+
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    guardar: function guardar() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return fetch("".concat(be, "/proveedores/").concat(_this2.$route.params.id), {
+                  method: "PUT",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombre: _this2.nombre
+                  })
+                });
+
+              case 3:
+                res = _context2.sent;
+                _context2.next = 6;
+                return res.json();
+
+              case 6:
+                datos = _context2.sent;
+                console.log(datos);
+                _context2.next = 13;
+                break;
+
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0);
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 10]]);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $d33eba = exports.default || module.exports;
+      
+      if (typeof $d33eba === 'function') {
+        $d33eba = $d33eba.options;
+      }
+    
+        /* template */
+        Object.assign($d33eba, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Editar Proveedores")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombre:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombre,
+          expression: "nombre"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombre },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombre = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.guardar } }, [_vm._v("Guardar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$d33eba', $d33eba);
+          } else {
+            api.reload('$d33eba', $d33eba);
+          }
+        }
+
+        
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarTamaños.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "EditarTamaños",
+  data: function data() {
+    return {
+      nombre: "",
+      relacion_precio: "",
+      app: _store.default.app
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var rescaf, caf;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("".concat(be, "/tamanos/").concat(_this.$route.params.id), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 2:
+              rescaf = _context.sent;
+              _context.next = 5;
+              return rescaf.json();
+
+            case 5:
+              caf = _context.sent;
+              console.log(caf);
+              _this.nombre = caf[0].nombre;
+              _this.relacion_precio = caf[0].relacion_precio;
+
+            case 9:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    guardar: function guardar() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return fetch("".concat(be, "/tamanos/").concat(_this2.$route.params.id), {
+                  method: "PUT",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombre: _this2.nombre,
+                    relacion_precio: _this2.relacion_precio
+                  })
+                });
+
+              case 3:
+                res = _context2.sent;
+                _context2.next = 6;
+                return res.json();
+
+              case 6:
+                datos = _context2.sent;
+                console.log(datos);
+                _context2.next = 13;
+                break;
+
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0);
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 10]]);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $04d195 = exports.default || module.exports;
+      
+      if (typeof $04d195 === 'function') {
+        $04d195 = $04d195.options;
+      }
+    
+        /* template */
+        Object.assign($04d195, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("editar Tamaños")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombre:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombre,
+          expression: "nombre"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombre },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombre = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Relacion Precio:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.relacion_precio,
+          expression: "relacion_precio"
+        }
+      ],
+      attrs: { type: "number", step: "0.1" },
+      domProps: { value: _vm.relacion_precio },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.relacion_precio = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.guardar } }, [_vm._v("Guardar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$04d195', $04d195);
+          } else {
+            api.reload('$04d195', $04d195);
+          }
+        }
+
+        
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarCaja.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "EditarCaja",
+  data: function data() {
+    return {
+      usuario: "",
+      fecha: "",
+      usuariosDisponibles: [],
+      app: _store.default.app
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var rescaj, caj, res, usuarios;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("".concat(be, "/caja/").concat(_this.$route.params.id), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 2:
+              rescaj = _context.sent;
+              _context.next = 5;
+              return rescaj.json();
+
+            case 5:
+              caj = _context.sent;
+              _this.usuario = caj[0].usuario;
+              _this.fecha = caj[0].fecha.split("T")[0];
+              _context.next = 10;
+              return fetch("".concat(be, "/usuarios"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 10:
+              res = _context.sent;
+              _context.next = 13;
+              return res.json();
+
+            case 13:
+              usuarios = _context.sent;
+              _this.usuariosDisponibles = usuarios;
+
+            case 15:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    guardar: function guardar() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return fetch("".concat(be, "/caja/").concat(_this2.$route.params.id), {
+                  method: "PUT",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    usuario: _this2.usuario,
+                    fecha: _this2.fecha
+                  })
+                });
+
+              case 2:
+                res = _context2.sent;
+                _context2.next = 5;
+                return res.json();
+
+              case 5:
+                datos = _context2.sent;
+                console.log(datos);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $cd0fd0 = exports.default || module.exports;
+      
+      if (typeof $cd0fd0 === 'function') {
+        $cd0fd0 = $cd0fd0.options;
+      }
+    
+        /* template */
+        Object.assign($cd0fd0, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Editar caja")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Usuario:")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.usuario,
+            expression: "usuario"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.usuario = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.usuariosDisponibles, function(usuario) {
+          return _c(
+            "option",
+            {
+              key: usuario.cod_usuarios,
+              domProps: { value: usuario.cod_usuarios }
+            },
+            [_vm._v(_vm._s(usuario.nombres) + " " + _vm._s(usuario.apellidos))]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("label", [_vm._v("Fecha:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.fecha,
+          expression: "fecha"
+        }
+      ],
+      attrs: { type: "date" },
+      domProps: { value: _vm.fecha },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.fecha = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.guardar } }, [_vm._v("Guardar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-cd0fd0",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$cd0fd0', $cd0fd0);
+          } else {
+            api.reload('$cd0fd0', $cd0fd0);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarVenta.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "EditarVenta",
+  data: function data() {
+    return {
+      cafe: "",
+      cantidad: "",
+      caja: "",
+      cafesDisponibles: [],
+      cajasDisponibles: [],
+      app: _store.default.app
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var resven, ven, res, cafes, resCajas, cajas;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("".concat(be, "/ventas/").concat(_this.$route.params.id), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 2:
+              resven = _context.sent;
+              _context.next = 5;
+              return resven.json();
+
+            case 5:
+              ven = _context.sent;
+              _this.cafe = ven[0].cafe;
+              _this.cantidad = ven[0].cantidad;
+              _this.caja = ven[0].identificador;
+              _context.next = 11;
+              return fetch("".concat(be, "/cafes"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 11:
+              res = _context.sent;
+              _context.next = 14;
+              return res.json();
+
+            case 14:
+              cafes = _context.sent;
+              _this.cafesDisponibles = cafes;
+              _context.next = 18;
+              return fetch("".concat(be, "/caja"), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 18:
+              resCajas = _context.sent;
+              _context.next = 21;
+              return resCajas.json();
+
+            case 21:
+              cajas = _context.sent;
+              _this.cajasDisponibles = cajas;
+
+            case 23:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    guardar: function guardar() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return fetch("".concat(be, "/ventas/").concat(_this2.$route.params.id), {
+                  method: "PUT",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    identificador: _this2.caja,
+                    cafe: _this2.cafe,
+                    cantidad: _this2.cantidad
+                  })
+                });
+
+              case 2:
+                res = _context2.sent;
+                _context2.next = 5;
+                return res.json();
+
+              case 5:
+                datos = _context2.sent;
+                console.log(datos);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $cb1f6e = exports.default || module.exports;
+      
+      if (typeof $cb1f6e === 'function') {
+        $cb1f6e = $cb1f6e.options;
+      }
+    
+        /* template */
+        Object.assign($cb1f6e, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Editar venta")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Caja:")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.caja,
+            expression: "caja"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.caja = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.cajasDisponibles, function(caja) {
+          return _c(
+            "option",
+            { key: caja.cod_caja, domProps: { value: caja.cod_caja } },
+            [_vm._v(_vm._s(caja.cod_caja))]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("label", [_vm._v("Café:")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.cafe,
+            expression: "cafe"
+          }
+        ],
+        on: {
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.cafe = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "" } }),
+        _vm._v(" "),
+        _vm._l(_vm.cafesDisponibles, function(cafe) {
+          return _c(
+            "option",
+            { key: cafe.cod_cafe, domProps: { value: cafe.cod_cafe } },
+            [_vm._v(_vm._s(cafe.nombre))]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("label", [_vm._v("Cantidad:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.cantidad,
+          expression: "cantidad"
+        }
+      ],
+      attrs: { type: "number" },
+      domProps: { value: _vm.cantidad },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.cantidad = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.guardar } }, [_vm._v("Guardar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-cb1f6e",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$cb1f6e', $cb1f6e);
+          } else {
+            api.reload('$cb1f6e', $cb1f6e);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/router.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15210,6 +16302,14 @@ var _VerUno = _interopRequireDefault(require("./componentes/VerUno"));
 var _EditarCafe = _interopRequireDefault(require("./componentes/EditarCafe"));
 
 var _EditarUsuarios = _interopRequireDefault(require("./componentes/EditarUsuarios"));
+
+var _EditarProveedores = _interopRequireDefault(require("./componentes/EditarProveedores"));
+
+var _EditarTamaOs = _interopRequireDefault(require("./componentes/EditarTama\xF1os"));
+
+var _EditarCaja = _interopRequireDefault(require("./componentes/EditarCaja"));
+
+var _EditarVenta = _interopRequireDefault(require("./componentes/EditarVenta"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15274,6 +16374,9 @@ var Router = new _vueRouter.default({
       direccion: 'proveedores'
     }
   }, {
+    path: '/proveedores/:id/editar',
+    component: _EditarProveedores.default
+  }, {
     path: '/tamanos',
     component: _VerTodos.default,
     props: {
@@ -15288,6 +16391,9 @@ var Router = new _vueRouter.default({
     props: {
       direccion: 'tamanos'
     }
+  }, {
+    path: '/tamanos/:id/editar',
+    component: _EditarTamaOs.default
   }, {
     path: '/caja',
     component: _VerTodos.default,
@@ -15304,6 +16410,9 @@ var Router = new _vueRouter.default({
       direccion: 'caja'
     }
   }, {
+    path: '/caja/:id/editar',
+    component: _EditarCaja.default
+  }, {
     path: '/ventas',
     component: _VerTodos.default,
     props: {
@@ -15319,6 +16428,9 @@ var Router = new _vueRouter.default({
       direccion: 'ventas'
     }
   }, {
+    path: '/ventas/:id/editar',
+    component: _EditarVenta.default
+  }, {
     path: '/',
     component: _Login.default
   }, {
@@ -15328,7 +16440,7 @@ var Router = new _vueRouter.default({
 });
 var _default = Router;
 exports.default = _default;
-},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirCaja":"js/componentes/AñadirCaja.vue","./componentes/AñadirVenta":"js/componentes/AñadirVenta.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue","./componentes/VerUno":"js/componentes/VerUno.vue","./componentes/EditarCafe":"js/componentes/EditarCafe.vue","./componentes/EditarUsuarios":"js/componentes/EditarUsuarios.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
+},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirCaja":"js/componentes/AñadirCaja.vue","./componentes/AñadirVenta":"js/componentes/AñadirVenta.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue","./componentes/VerUno":"js/componentes/VerUno.vue","./componentes/EditarCafe":"js/componentes/EditarCafe.vue","./componentes/EditarUsuarios":"js/componentes/EditarUsuarios.vue","./componentes/EditarProveedores":"js/componentes/EditarProveedores.vue","./componentes/EditarTamaños":"js/componentes/EditarTamaños.vue","./componentes/EditarCaja":"js/componentes/EditarCaja.vue","./componentes/EditarVenta":"js/componentes/EditarVenta.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
 
         var $71a832 = exports.default || module.exports;
       
@@ -15547,7 +16659,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53116" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53320" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

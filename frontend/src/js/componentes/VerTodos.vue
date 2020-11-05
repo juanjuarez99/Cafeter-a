@@ -11,6 +11,9 @@
           <td v-for="encabezado in encabezados" :key="encabezado">
             {{ dato[encabezado] }}
           </td>
+          <td>
+            <Borrar :direccion="direccion" :id="dato[Object.keys(dato)[0]]"/>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -21,10 +24,12 @@
 import config from "../config";
 const be = config.direccion_backend;
 import Store from "../store";
+import Borrar from "./Borrar"
 
 export default {
   name: "VerTodos",
   props: ["direccion"],
+  components: { Borrar },
   data: () => ({
     datos: [],
     encabezados: [],

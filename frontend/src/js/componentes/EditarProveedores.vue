@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Añadir Proveedores</h1>
+    <h1>Editar Proveedores</h1>
     <label>Nombre:</label>
     <input type="text" v-model="nombre" />
-    <button @click="agregar">Agregar</button>
+    <button @click="guardar">Guardar</button>
   </div>
 </template>>
 
@@ -13,17 +13,30 @@ const be = config.direccion_backend;
 import Store from "../store";
 
 export default {
-  name: "AñadirProveedores",
+  name: "EditarProveedores",
   data: () => ({
     nombre: "",
     app: Store.app,
   }),
 
+  async created() {
+    const rescaf = await fetch(`${be}/proveedores/${this.$route.params.id}`, {
+      headers: {
+        "x-token": this.app.token,
+      },
+    })
+    const caf = await rescaf.json()
+    console.log(caf)
+    this.nombre = caf[0].nombre
+    
+  },
+
+
   methods: {
-    async agregar() {
+    async guardar() {
         try {
-      const res = await fetch(`${be}/proveedores`, {
-        method: "POST",
+      const res = await fetch(`${be}/proveedores/${this.$route.params.id}`, {
+        method: "PUT",
         headers: {
           "x-token": this.app.token,
           "Content-Type": "application/json; charset=utf-8",
