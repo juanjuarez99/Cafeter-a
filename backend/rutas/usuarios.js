@@ -60,10 +60,27 @@ module.exports = function (app, connection) {
         });
         return */
       }
-      let consulta = `UPDATE \`usuarios\` SET \`nombres\` = '${req.body.nombres}', \`apellidos\` = '${req.body.apellidos}', \`nombre_usuario\` = '${req.body.nombre_usuario}', \`contraseña\` = '${contraEncriptada}', \`permisos\` = '${req.body.permisos}' WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
-      if (!contraEncriptada) {
-        consulta = `UPDATE \`usuarios\` SET \`nombres\` = '${req.body.nombres}', \`apellidos\` = '${req.body.apellidos}', \`nombre_usuario\` = '${req.body.nombre_usuario}', \`permisos\` = '${req.body.permisos}' WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
+      let consulta = `UPDATE \`usuarios\` SET `;
+      let actual = req.body.original;
+
+      if (req.body.nombres && req.body.nombres != actual.nombres) {
+        consulta += `\`nombres\` = '${req.body.nombres}', `;
       }
+      if (req.body.apellidos && req.body.apellidos != actual.apellidos) {
+        consulta += `\`apellidos\` = '${req.body.apellidos}', `;
+      }
+      if (req.body.nombre_usuario && req.body.nombre_usuario != actual.nombre_usuario) {
+        consulta += `\`nombre_usuario\` = '${req.body.nombre_usuario}', `;
+      }
+      if (contraEncriptada) {
+        consulta += `\`contraseña\` = '${contraEncriptada}', `;
+      }
+      if (req.body.permisos && req.body.permisos != actual.permisos) {
+        consulta += `\`permisos\` = '${req.body.permisos}', `;
+      }
+      consulta = consulta.replace(/, $/, ' ');
+      consulta += `WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`;
+
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

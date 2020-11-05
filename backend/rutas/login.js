@@ -17,7 +17,7 @@ module.exports = function (app, connection) {
             const contraActual = req.body['contraseña']
             const coinciden = await bcrypt.compare(contraActual, contraUsuario)
             if (!coinciden) throw "Contraseña incorrecta"
-            const token = jwt.sign({ check: true, usuario: rows[0].nombre_usuario }, app.get('clave'), {
+            const token = jwt.sign({ check: true, usuario: rows[0].nombre_usuario, permisos: rows[0].permisos }, app.get('clave'), {
               expiresIn: 1440
             })
             res.json({

@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <Nav v-if="iniciado"></Nav>
+    <Nav v-if="iniciado" :permisos="permisos"></Nav>
     <router-view></router-view>
 </div>
 </template>
