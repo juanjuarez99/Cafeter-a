@@ -14912,7 +14912,270 @@ render._withStripped = true
       
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/router.js":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarUsuarios.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _store = _interopRequireDefault(require("../store"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var be = _config.default.direccion_backend;
+var _default = {
+  name: "EditarUsuario",
+  data: function data() {
+    return {
+      nombres: "",
+      apellidos: "",
+      usuario: "",
+      contra: "",
+      permisos: "",
+      app: _store.default.app
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var rescaf, caf;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("".concat(be, "/usuarios/").concat(_this.$route.params.id), {
+                headers: {
+                  "x-token": _this.app.token
+                }
+              });
+
+            case 2:
+              rescaf = _context.sent;
+              _context.next = 5;
+              return rescaf.json();
+
+            case 5:
+              caf = _context.sent;
+              console.log(caf);
+              _this.nombres = caf[0].nombres;
+              _this.apellidos = caf[0].apellidos;
+              _this.usuario = caf[0].nombre_usuario;
+              _this.permisos = caf[0].permisos;
+
+            case 11:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    guardar: function guardar() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, datos;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return fetch("".concat(be, "/usuarios/").concat(_this2.$route.params.id), {
+                  method: "PUT",
+                  headers: {
+                    "x-token": _this2.app.token,
+                    "Content-Type": "application/json; charset=utf-8"
+                  },
+                  body: JSON.stringify({
+                    nombres: _this2.nombres,
+                    apellidos: _this2.apellidos,
+                    nombre_usuario: _this2.usuario,
+                    contra: _this2.contra,
+                    permisos: _this2.permisos
+                  })
+                });
+
+              case 3:
+                res = _context2.sent;
+                _context2.next = 6;
+                return res.json();
+
+              case 6:
+                datos = _context2.sent;
+                console.log(datos);
+                _context2.next = 13;
+                break;
+
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0);
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 10]]);
+      }))();
+    }
+  }
+};
+exports.default = _default;
+        var $c1b42e = exports.default || module.exports;
+      
+      if (typeof $c1b42e === 'function') {
+        $c1b42e = $c1b42e.options;
+      }
+    
+        /* template */
+        Object.assign($c1b42e, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Editar Usuarios")]),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombres de Usuario:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.nombres,
+          expression: "nombres"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.nombres },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.nombres = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Apellidos de Usuario:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.apellidos,
+          expression: "apellidos"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.apellidos },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.apellidos = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Nombre de Usuario:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.usuario,
+          expression: "usuario"
+        }
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.usuario },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.usuario = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Contraseña:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.contra,
+          expression: "contra"
+        }
+      ],
+      attrs: { type: "password" },
+      domProps: { value: _vm.contra },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.contra = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("label", [_vm._v("Permisos:")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.guardar } }, [_vm._v("Guardar")])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$c1b42e', $c1b42e);
+          } else {
+            api.reload('$c1b42e', $c1b42e);
+          }
+        }
+
+        
+      }
+    })();
+},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/router.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14946,6 +15209,8 @@ var _VerUno = _interopRequireDefault(require("./componentes/VerUno"));
 
 var _EditarCafe = _interopRequireDefault(require("./componentes/EditarCafe"));
 
+var _EditarUsuarios = _interopRequireDefault(require("./componentes/EditarUsuarios"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue.default.use(_vueRouter.default);
@@ -14972,6 +15237,9 @@ var Router = new _vueRouter.default({
     props: {
       direccion: 'usuarios'
     }
+  }, {
+    path: '/usuarios/:id/editar',
+    component: _EditarUsuarios.default
   }, {
     path: '/cafes',
     component: _VerTodos.default,
@@ -15060,7 +15328,7 @@ var Router = new _vueRouter.default({
 });
 var _default = Router;
 exports.default = _default;
-},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirCaja":"js/componentes/AñadirCaja.vue","./componentes/AñadirVenta":"js/componentes/AñadirVenta.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue","./componentes/VerUno":"js/componentes/VerUno.vue","./componentes/EditarCafe":"js/componentes/EditarCafe.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
+},{"vue":"../../node_modules/vue/dist/vue.runtime.esm.js","vue-router":"../../node_modules/vue-router/dist/vue-router.esm.js","./componentes/Login":"js/componentes/Login.vue","./componentes/Dashboard":"js/componentes/Dashboard.vue","./componentes/VerTodos":"js/componentes/VerTodos.vue","./componentes/AñadirCafe":"js/componentes/AñadirCafe.vue","./componentes/AñadirCaja":"js/componentes/AñadirCaja.vue","./componentes/AñadirVenta":"js/componentes/AñadirVenta.vue","./componentes/AñadirUsuarios":"js/componentes/AñadirUsuarios.vue","./componentes/AñadirProveedores":"js/componentes/AñadirProveedores.vue","./componentes/AñadirTamaños":"js/componentes/AñadirTamaños.vue","./componentes/VerUno":"js/componentes/VerUno.vue","./componentes/EditarCafe":"js/componentes/EditarCafe.vue","./componentes/EditarUsuarios":"js/componentes/EditarUsuarios.vue"}],"js/componentes/Nav.vue":[function(require,module,exports) {
 
         var $71a832 = exports.default || module.exports;
       
@@ -15279,7 +15547,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51979" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53116" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
