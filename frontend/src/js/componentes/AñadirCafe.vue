@@ -49,7 +49,7 @@ export default {
     app: Store.app,
   }),
   async created() {
-    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+    this.app.connection = new WebSocket(config.websocket);
     const resprove = await fetch(`${be}/proveedores`, {
       headers: {
         "x-token": this.app.token,

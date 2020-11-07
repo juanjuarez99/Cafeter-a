@@ -197,7 +197,7 @@ export default {
 
   methods: {
     async agregar() {
-      this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+      this.app.connection = new WebSocket(config.websocket);
       try {
         const res = await fetch(`${be}/usuarios`, {
           method: "POST",

@@ -71506,7 +71506,7 @@ var _default = {
     };
   },
   created: function created() {
-    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+    this.app.connection = new WebSocket(_config.default.websocket);
   },
   methods: {
     borrar: function borrar() {
@@ -71912,7 +71912,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/proveedores"), {
                 headers: {
@@ -72223,7 +72223,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/usuarios"), {
                 headers: {
@@ -72453,7 +72453,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/cafes"), {
                 headers: {
@@ -72789,7 +72789,7 @@ var _default = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+                _this.app.connection = new WebSocket(_config.default.websocket);
                 _context.prev = 1;
                 _context.next = 4;
                 return fetch("".concat(be, "/usuarios"), {
@@ -74075,7 +74075,7 @@ var _default = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+                _this.app.connection = new WebSocket(_config.default.websocket);
                 _context.prev = 1;
                 _context.next = 4;
                 return fetch("".concat(be, "/proveedores"), {
@@ -74227,7 +74227,7 @@ var _default = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+                _this.app.connection = new WebSocket(_config.default.websocket);
                 _context.prev = 1;
                 _context.next = 4;
                 return fetch("".concat(be, "/tamanos"), {
@@ -74570,7 +74570,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/cafes/").concat(_this.$route.params.id), {
                 headers: {
@@ -74945,7 +74945,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/usuarios/").concat(_this.$route.params.id), {
                 headers: {
@@ -76293,7 +76293,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/proveedores/").concat(_this.$route.params.id), {
                 headers: {
@@ -76482,7 +76482,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/tamanos/").concat(_this.$route.params.id), {
                 headers: {
@@ -76697,7 +76697,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/caja/").concat(_this.$route.params.id), {
                 headers: {
@@ -76946,7 +76946,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+              _this.app.connection = new WebSocket(_config.default.websocket);
               _context.next = 3;
               return fetch("".concat(be, "/ventas/").concat(_this.$route.params.id), {
                 headers: {
@@ -77625,7 +77625,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59871" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55296" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -22,7 +22,7 @@ export default {
   }),
 
   async created() {
-    this.app.connection = new WebSocket("ws://192.168.0.16:3001");
+    this.app.connection = new WebSocket(config.websocket);
     const rescaf = await fetch(`${be}/proveedores/${this.$route.params.id}`, {
       headers: {
         "x-token": this.app.token,
