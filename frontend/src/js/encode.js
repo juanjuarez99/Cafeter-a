@@ -3,15 +3,12 @@ const permABin = (permiso) =>
     permiso.ver ? 1 : 0
   }`;
 
-const binAPerm = (bin) => (
-  console.log(bin),
-  {
-    ver: bin[3] == 1 ? true : false,
-    anadir: bin[2] == 1 ? true : false,
-    editar: bin[1] == 1 ? true : false,
-    borrar: bin[0] == 1 ? true : false,
-  }
-);
+const binAPerm = (bin) => ({
+  ver: bin[3] == 1 ? true : false,
+  anadir: bin[2] == 1 ? true : false,
+  editar: bin[1] == 1 ? true : false,
+  borrar: bin[0] == 1 ? true : false,
+});
 
 const binAHex = (bin) =>
   parseInt(bin, 2)
