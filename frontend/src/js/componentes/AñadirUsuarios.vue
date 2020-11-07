@@ -127,6 +127,7 @@
 import config from "../config";
 const be = config.direccion_backend;
 import Store from "../store";
+import { encode, decode } from "../encode";
 
 export default {
   name: "AñadirUsuario",
@@ -180,19 +181,9 @@ export default {
 
   computed: {
     permisosEnc() {
-      const p = this.perms
-      let todosPermisos = ""
-      Object.keys(p).forEach(seccion => {
-        let cadenaPermisos = ""
-        Object.keys(p[seccion]).forEach(permiso => {
-          const valorPermiso = p[seccion][permiso]
-          cadenaPermisos = `${valorPermiso ? 1 : 0}${cadenaPermisos}`
-          
-        })
-        todosPermisos += parseInt(Number(cadenaPermisos), 2).toString(16).toUpperCase()
-      })
-      return todosPermisos
-    }
+      const p = this.perms;
+      return encode(p);
+    },
   },
 
   methods: {

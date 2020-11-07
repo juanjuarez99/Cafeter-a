@@ -15,6 +15,7 @@ import config from "../config";
 const be = config.direccion_backend;
 import Store from "../store";
 import jwt from "jsonwebtoken";
+import { encode, decode } from "../encode";
 
 export default {
   name: "Login",
@@ -50,18 +51,7 @@ export default {
             if (err) {
               console.log(err);
             } else {
-              // AQUI HAY UN ERROR EN EL INDICE QUE SE OCUPA PARA DETECTAR A QUE PERMISO SE REFIERE POR SECCION, LOS ESTA DESFAZANDO
-              const p = decoded.permisos;
-              const etiquetas = Object.keys(this.app.permisos);
-              p.split("").forEach((permiso, i) => {
-                const bin = parseInt(permiso, 16).toString(2).padStart(4, "0");
-                const eti = Object.keys(this.app.permisos[etiquetas[i]]);
-                bin.split("").forEach((valor, j) => {
-                  this.app.permisos[etiquetas[i]][eti[j]] = Number(valor)
-                    ? true
-                    : false;
-                });
-              });
+              this.app.permisos = decode(decoded.permisos);
             }
           });
         }
