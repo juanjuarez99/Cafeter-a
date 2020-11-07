@@ -22,3 +22,23 @@
     </ul>
   </nav>
 </template>
+
+<style lang="scss" scoped>
+nav {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    li {
+      a {
+        color: white;
+        &:hover {
+          color: grey;
+        }
+      }
+    }
+  }
+}
+</style>

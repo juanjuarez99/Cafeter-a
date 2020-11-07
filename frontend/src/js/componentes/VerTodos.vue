@@ -1,23 +1,27 @@
 <template>
   <div :key="direccion">
     <h1>{{ direccion }}</h1>
-    <router-link v-if="app.permisos[direccion].anadir" :to="`/${direccion}/anadir`">Añadir</router-link>
+    <router-link
+      class="button"
+      v-if="app.permisos[direccion].anadir"
+      :to="`/${direccion}/anadir`"
+    >Añadir</router-link>
     <table>
       <thead>
-        <th v-for="encabezado in encabezados" :key="encabezado">
-          {{ encabezado }}
-        </th>
+        <th v-for="encabezado in encabezados" :key="encabezado">{{ encabezado }}</th>
       </thead>
       <tbody>
         <tr v-for="dato in datos" :key="dato[encabezados[0]]">
-          <td v-for="encabezado in encabezados" :key="encabezado">
-            {{ dato[encabezado] }}
-          </td>
+          <td v-for="encabezado in encabezados" :key="encabezado">{{ dato[encabezado] }}</td>
           <td v-if="app.permisos[direccion].borrar">
             <Borrar :direccion="direccion" :id="dato[Object.keys(dato)[0]]" />
           </td>
           <td v-if="app.permisos[direccion].editar">
-            <router-link :to="`/${direccion}/${dato[Object.keys(dato)[0]]}/editar`">Editar</router-link></td>
+            <router-link
+              class="button"
+              :to="`/${direccion}/${dato[Object.keys(dato)[0]]}/editar`"
+            >Editar</router-link>
+          </td>
         </tr>
       </tbody>
     </table>
