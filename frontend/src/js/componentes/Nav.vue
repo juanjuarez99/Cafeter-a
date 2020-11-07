@@ -4,7 +4,7 @@
       <li v-if="props.permisos.usuarios.ver">
         <router-link to="/usuarios">Usuarios</router-link>
       </li>
-      <li v-if="props.permisos.cafe.ver">
+      <li v-if="props.permisos.cafes.ver">
         <router-link to="/cafes">Cafes</router-link>
       </li>
       <li v-if="props.permisos.proveedores.ver">

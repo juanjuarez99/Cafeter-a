@@ -21,7 +21,7 @@ const hexABin = (hex) =>
     .padStart(4, '0');
 
 const encode = (permisos) =>
-  `${binAHex(permABin(permisos.cafe))}${binAHex(
+  `${binAHex(permABin(permisos.cafes))}${binAHex(
     permABin(permisos.tamanos)
   )}${binAHex(permABin(permisos.caja))}${binAHex(
     permABin(permisos.ventas)
@@ -30,7 +30,7 @@ const encode = (permisos) =>
   )}`;
 
 const decode = (hexperm) => ({
-  cafe: binAPerm(hexABin(hexperm[0])),
+  cafes: binAPerm(hexABin(hexperm[0])),
   tamanos: binAPerm(hexABin(hexperm[1])),
   caja: binAPerm(hexABin(hexperm[2])),
   ventas: binAPerm(hexABin(hexperm[3])),

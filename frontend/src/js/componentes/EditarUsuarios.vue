@@ -15,19 +15,19 @@
     <h3>Cafe:</h3>
     <label>
       Ver:
-      <input type="checkbox" v-model="perms.cafe.ver" />
+      <input type="checkbox" v-model="perms.cafes.ver" />
     </label>
     <label>
       Añadir:
-      <input type="checkbox" v-model="perms.cafe.anadir" />
+      <input type="checkbox" v-model="perms.cafes.anadir" />
     </label>
     <label>
       Editar:
-      <input type="checkbox" v-model="perms.cafe.editar" />
+      <input type="checkbox" v-model="perms.cafes.editar" />
     </label>
     <label>
       Borrar:
-      <input type="checkbox" v-model="perms.cafe.borrar" />
+      <input type="checkbox" v-model="perms.cafes.borrar" />
     </label>
 
     <h3>Tamaños:</h3>
@@ -142,7 +142,7 @@ export default {
 
     original: {},
     perms: {
-      cafe: {
+      cafes: {
         ver: false,
         anadir: false,
         editar: false,
