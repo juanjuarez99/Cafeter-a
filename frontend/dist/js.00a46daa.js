@@ -12259,10 +12259,11 @@ if (inBrowser && window.Vue) {
 var _default = VueRouter;
 exports.default = _default;
 },{}],"js/config.js":[function(require,module,exports) {
+// Exportas un objeto con la configuración de la aplicación
 module.exports = {
   claveToken: '1234567890',
-  direccion_backend: 'http://192.168.0.16:3000',
-  websocket: "ws://192.168.0.16:3001"
+  direccion_backend: 'http://192.168.1.72:3000',
+  websocket: 'ws://192.168.1.72:3001'
 };
 },{}],"js/store.js":[function(require,module,exports) {
 "use strict";
@@ -12276,9 +12277,11 @@ var _vue = _interopRequireDefault(require("vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Este archivo se encarga de guardar el estado de la aplicación cuando se esta
+// ejecutando, guarda los permisos y el token del usuario actual
 var obj = {
   app: {
-    token: "",
+    token: '',
     iniciado: false,
     permisos: {
       cafes: {
@@ -70866,7 +70869,63 @@ module.exports = {
   NotBeforeError: require('./lib/NotBeforeError'),
   TokenExpiredError: require('./lib/TokenExpiredError')
 };
-},{"./decode":"../../node_modules/jsonwebtoken/decode.js","./verify":"../../node_modules/jsonwebtoken/verify.js","./sign":"../../node_modules/jsonwebtoken/sign.js","./lib/JsonWebTokenError":"../../node_modules/jsonwebtoken/lib/JsonWebTokenError.js","./lib/NotBeforeError":"../../node_modules/jsonwebtoken/lib/NotBeforeError.js","./lib/TokenExpiredError":"../../node_modules/jsonwebtoken/lib/TokenExpiredError.js"}],"../../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"./decode":"../../node_modules/jsonwebtoken/decode.js","./verify":"../../node_modules/jsonwebtoken/verify.js","./sign":"../../node_modules/jsonwebtoken/sign.js","./lib/JsonWebTokenError":"../../node_modules/jsonwebtoken/lib/JsonWebTokenError.js","./lib/NotBeforeError":"../../node_modules/jsonwebtoken/lib/NotBeforeError.js","./lib/TokenExpiredError":"../../node_modules/jsonwebtoken/lib/TokenExpiredError.js"}],"js/encode.js":[function(require,module,exports) {
+// Creamos una función que genera una cadena de texto en binario tipo: "0000" o
+// "1001" a partir de el permiso que se le pase
+var permABin = function permABin(permiso) {
+  return "".concat(permiso.borrar ? 1 : 0).concat(permiso.editar ? 1 : 0).concat(permiso.anadir ? 1 : 0).concat(permiso.ver ? 1 : 0);
+}; // Creamos una función para crear un objeto que cuente con 4 campos, "ver",
+// "anadir", "editar" y "borrar" basados en una cadena de binario tipo "1010"
+
+
+var binAPerm = function binAPerm(bin) {
+  return {
+    ver: bin[3] == 1 ? true : false,
+    anadir: bin[2] == 1 ? true : false,
+    editar: bin[1] == 1 ? true : false,
+    borrar: bin[0] == 1 ? true : false
+  };
+}; // Creamos una función que convierta una cadena de binario tipo: "1111" a
+// hexadecimal, tipo "F"
+
+
+var binAHex = function binAHex(bin) {
+  return parseInt(bin, 2).toString(16).toUpperCase();
+}; // Creamos una función que convierta una cadena de hexadecimal tipo: "B" a
+// "1011"
+
+
+var hexABin = function hexABin(hex) {
+  return parseInt(hex, 16).toString(2).padStart(4, '0');
+}; // Creamos una función que utiliza las funciones anteriores para tomar un objeto
+// que tenga 6 campos, "cafes", "tamanos", "caja", "ventas", "proveedores" y
+// "usuarios"    y lo convertimos en una cadena de texto en formato hexadecimal
+
+
+var encode = function encode(permisos) {
+  return "".concat(binAHex(permABin(permisos.cafes))).concat(binAHex(permABin(permisos.tamanos))).concat(binAHex(permABin(permisos.caja))).concat(binAHex(permABin(permisos.ventas))).concat(binAHex(permABin(permisos.proveedores))).concat(binAHex(permABin(permisos.usuarios)));
+}; // Creamos una función que utiliza las funciones anteriores a encode para tomar
+// una cadena de texto en formato hexadecimal y convertirla en un objeto con
+// campos "cafes", "tamanos", "caja", "ventas", "proveedores" y "usuarios"
+// representando los permisos del usuario para cada sección
+
+
+var decode = function decode(hexperm) {
+  return {
+    cafes: binAPerm(hexABin(hexperm[0])),
+    tamanos: binAPerm(hexABin(hexperm[1])),
+    caja: binAPerm(hexABin(hexperm[2])),
+    ventas: binAPerm(hexABin(hexperm[3])),
+    proveedores: binAPerm(hexABin(hexperm[4])),
+    usuarios: binAPerm(hexABin(hexperm[5]))
+  };
+};
+
+module.exports = {
+  encode: encode,
+  decode: decode
+};
+},{}],"../../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -71222,6 +71281,8 @@ var _store = _interopRequireDefault(require("../store"));
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
+var _encode = require("../encode");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -71283,16 +71344,7 @@ var _default = {
                     if (err) {
                       console.log(err);
                     } else {
-                      // AQUI HAY UN ERROR EN EL INDICE QUE SE OCUPA PARA DETECTAR A QUE PERMISO SE REFIERE POR SECCION, LOS ESTA DESFAZANDO
-                      var p = decoded.permisos;
-                      var etiquetas = Object.keys(_this.app.permisos);
-                      p.split("").forEach(function (permiso, i) {
-                        var bin = parseInt(permiso, 16).toString(2).padStart(4, "0");
-                        var eti = Object.keys(_this.app.permisos[etiquetas[i]]);
-                        bin.split("").forEach(function (valor, j) {
-                          _this.app.permisos[etiquetas[i]][eti[j]] = Number(valor) ? true : false;
-                        });
-                      });
+                      _this.app.permisos = (0, _encode.decode)(decoded.permisos);
                     }
                   });
                 }
@@ -71415,7 +71467,7 @@ render._withStripped = true
       
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","jsonwebtoken":"../../node_modules/jsonwebtoken/index.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/Dashboard.vue":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","jsonwebtoken":"../../node_modules/jsonwebtoken/index.js","../encode":"js/encode.js","_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/Dashboard.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -71759,7 +71811,10 @@ exports.default = _default;
       _vm.app.permisos[_vm.direccion].anadir
         ? _c(
             "router-link",
-            { attrs: { to: "/" + _vm.direccion + "/anadir" } },
+            {
+              staticClass: "button",
+              attrs: { to: "/" + _vm.direccion + "/anadir" }
+            },
             [_vm._v("Añadir")]
           )
         : _vm._e(),
@@ -71768,9 +71823,7 @@ exports.default = _default;
         _c(
           "thead",
           _vm._l(_vm.encabezados, function(encabezado) {
-            return _c("th", { key: encabezado }, [
-              _vm._v("\n        " + _vm._s(encabezado) + "\n      ")
-            ])
+            return _c("th", { key: encabezado }, [_vm._v(_vm._s(encabezado))])
           }),
           0
         ),
@@ -71784,9 +71837,7 @@ exports.default = _default;
               [
                 _vm._l(_vm.encabezados, function(encabezado) {
                   return _c("td", { key: encabezado }, [
-                    _vm._v(
-                      "\n          " + _vm._s(dato[encabezado]) + "\n        "
-                    )
+                    _vm._v(_vm._s(dato[encabezado]))
                   ])
                 }),
                 _vm._v(" "),
@@ -71812,6 +71863,7 @@ exports.default = _default;
                         _c(
                           "router-link",
                           {
+                            staticClass: "button",
                             attrs: {
                               to:
                                 "/" +
@@ -72707,6 +72759,8 @@ var _config = _interopRequireDefault(require("../config"));
 
 var _store = _interopRequireDefault(require("../store"));
 
+var _encode = require("../encode");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -72725,7 +72779,7 @@ var _default = {
       permisos: "",
       app: _store.default.app,
       perms: {
-        cafe: {
+        cafes: {
           ver: false,
           anadir: false,
           editar: false,
@@ -72767,16 +72821,7 @@ var _default = {
   computed: {
     permisosEnc: function permisosEnc() {
       var p = this.perms;
-      var todosPermisos = "";
-      Object.keys(p).forEach(function (seccion) {
-        var cadenaPermisos = "";
-        Object.keys(p[seccion]).forEach(function (permiso) {
-          var valorPermiso = p[seccion][permiso];
-          cadenaPermisos = "".concat(valorPermiso ? 1 : 0).concat(cadenaPermisos);
-        });
-        todosPermisos += parseInt(Number(cadenaPermisos), 2).toString(16).toUpperCase();
-      });
-      return todosPermisos;
+      return (0, _encode.encode)(p);
     }
   },
   methods: {
@@ -72955,36 +73000,36 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.ver,
-            expression: "perms.cafe.ver"
+            value: _vm.perms.cafes.ver,
+            expression: "perms.cafes.ver"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.ver)
-            ? _vm._i(_vm.perms.cafe.ver, null) > -1
-            : _vm.perms.cafe.ver
+          checked: Array.isArray(_vm.perms.cafes.ver)
+            ? _vm._i(_vm.perms.cafes.ver, null) > -1
+            : _vm.perms.cafes.ver
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.ver,
+            var $$a = _vm.perms.cafes.ver,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "ver", $$a.concat([$$v]))
+                $$i < 0 && _vm.$set(_vm.perms.cafes, "ver", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "ver",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "ver", $$c)
+              _vm.$set(_vm.perms.cafes, "ver", $$c)
             }
           }
         }
@@ -72998,36 +73043,37 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.anadir,
-            expression: "perms.cafe.anadir"
+            value: _vm.perms.cafes.anadir,
+            expression: "perms.cafes.anadir"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.anadir)
-            ? _vm._i(_vm.perms.cafe.anadir, null) > -1
-            : _vm.perms.cafe.anadir
+          checked: Array.isArray(_vm.perms.cafes.anadir)
+            ? _vm._i(_vm.perms.cafes.anadir, null) > -1
+            : _vm.perms.cafes.anadir
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.anadir,
+            var $$a = _vm.perms.cafes.anadir,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "anadir", $$a.concat([$$v]))
+                $$i < 0 &&
+                  _vm.$set(_vm.perms.cafes, "anadir", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "anadir",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "anadir", $$c)
+              _vm.$set(_vm.perms.cafes, "anadir", $$c)
             }
           }
         }
@@ -73041,36 +73087,37 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.editar,
-            expression: "perms.cafe.editar"
+            value: _vm.perms.cafes.editar,
+            expression: "perms.cafes.editar"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.editar)
-            ? _vm._i(_vm.perms.cafe.editar, null) > -1
-            : _vm.perms.cafe.editar
+          checked: Array.isArray(_vm.perms.cafes.editar)
+            ? _vm._i(_vm.perms.cafes.editar, null) > -1
+            : _vm.perms.cafes.editar
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.editar,
+            var $$a = _vm.perms.cafes.editar,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "editar", $$a.concat([$$v]))
+                $$i < 0 &&
+                  _vm.$set(_vm.perms.cafes, "editar", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "editar",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "editar", $$c)
+              _vm.$set(_vm.perms.cafes, "editar", $$c)
             }
           }
         }
@@ -73084,36 +73131,37 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.borrar,
-            expression: "perms.cafe.borrar"
+            value: _vm.perms.cafes.borrar,
+            expression: "perms.cafes.borrar"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.borrar)
-            ? _vm._i(_vm.perms.cafe.borrar, null) > -1
-            : _vm.perms.cafe.borrar
+          checked: Array.isArray(_vm.perms.cafes.borrar)
+            ? _vm._i(_vm.perms.cafes.borrar, null) > -1
+            : _vm.perms.cafes.borrar
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.borrar,
+            var $$a = _vm.perms.cafes.borrar,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "borrar", $$a.concat([$$v]))
+                $$i < 0 &&
+                  _vm.$set(_vm.perms.cafes, "borrar", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "borrar",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "borrar", $$c)
+              _vm.$set(_vm.perms.cafes, "borrar", $$c)
             }
           }
         }
@@ -74038,7 +74086,7 @@ render._withStripped = true
         
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirProveedores.vue":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","../encode":"js/encode.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/AñadirProveedores.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -74876,6 +74924,8 @@ var _config = _interopRequireDefault(require("../config"));
 
 var _store = _interopRequireDefault(require("../store"));
 
+var _encode = require("../encode");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -74895,7 +74945,7 @@ var _default = {
       app: _store.default.app,
       original: {},
       perms: {
-        cafe: {
+        cafes: {
           ver: false,
           anadir: false,
           editar: false,
@@ -74931,9 +74981,7 @@ var _default = {
           editar: false,
           borrar: false
         }
-      } // ACUERDATE DE HACER LOS MESMOS CAMBIOS QUE EN AÑADIR USUARIOS PARA LOS PERMISOS Y HACER EL
-      // ALGORITMO AL REVES PARA DECIFRAR LOS PERMISOS
-
+      }
     };
   },
   created: function created() {
@@ -74965,14 +75013,8 @@ var _default = {
               _this.usuario = caf[0].nombre_usuario;
               _this.original = caf[0];
               p = caf[0].permisos;
+              _this.perms = (0, _encode.decode)(p);
               etiquetas = Object.keys(_this.perms);
-              p.split('').forEach(function (permiso, i) {
-                var bin = parseInt(permiso, 16).toString(2).padStart(4, '0');
-                var eti = Object.keys(_this.perms[etiquetas[i]]);
-                bin.split('').forEach(function (valor, j) {
-                  _this.perms[etiquetas[i]][eti[j]] = Number(valor) ? true : false;
-                });
-              });
 
             case 14:
             case "end":
@@ -74985,16 +75027,7 @@ var _default = {
   computed: {
     permisosEnc: function permisosEnc() {
       var p = this.perms;
-      var todosPermisos = "";
-      Object.keys(p).forEach(function (seccion) {
-        var cadenaPermisos = "";
-        Object.keys(p[seccion]).forEach(function (permiso) {
-          var valorPermiso = p[seccion][permiso];
-          cadenaPermisos = "".concat(valorPermiso ? 1 : 0).concat(cadenaPermisos);
-        });
-        todosPermisos += parseInt(Number(cadenaPermisos), 2).toString(16).toUpperCase();
-      });
-      return todosPermisos;
+      return (0, _encode.encode)(p);
     }
   },
   methods: {
@@ -75034,7 +75067,7 @@ var _default = {
                 datos = _context2.sent;
                 console.log(datos);
 
-                _this2.app.connection.send('hihi');
+                _this2.app.connection.send("hihi");
 
                 _context2.next = 14;
                 break;
@@ -75173,36 +75206,36 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.ver,
-            expression: "perms.cafe.ver"
+            value: _vm.perms.cafes.ver,
+            expression: "perms.cafes.ver"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.ver)
-            ? _vm._i(_vm.perms.cafe.ver, null) > -1
-            : _vm.perms.cafe.ver
+          checked: Array.isArray(_vm.perms.cafes.ver)
+            ? _vm._i(_vm.perms.cafes.ver, null) > -1
+            : _vm.perms.cafes.ver
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.ver,
+            var $$a = _vm.perms.cafes.ver,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "ver", $$a.concat([$$v]))
+                $$i < 0 && _vm.$set(_vm.perms.cafes, "ver", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "ver",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "ver", $$c)
+              _vm.$set(_vm.perms.cafes, "ver", $$c)
             }
           }
         }
@@ -75216,36 +75249,37 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.anadir,
-            expression: "perms.cafe.anadir"
+            value: _vm.perms.cafes.anadir,
+            expression: "perms.cafes.anadir"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.anadir)
-            ? _vm._i(_vm.perms.cafe.anadir, null) > -1
-            : _vm.perms.cafe.anadir
+          checked: Array.isArray(_vm.perms.cafes.anadir)
+            ? _vm._i(_vm.perms.cafes.anadir, null) > -1
+            : _vm.perms.cafes.anadir
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.anadir,
+            var $$a = _vm.perms.cafes.anadir,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "anadir", $$a.concat([$$v]))
+                $$i < 0 &&
+                  _vm.$set(_vm.perms.cafes, "anadir", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "anadir",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "anadir", $$c)
+              _vm.$set(_vm.perms.cafes, "anadir", $$c)
             }
           }
         }
@@ -75259,36 +75293,37 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.editar,
-            expression: "perms.cafe.editar"
+            value: _vm.perms.cafes.editar,
+            expression: "perms.cafes.editar"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.editar)
-            ? _vm._i(_vm.perms.cafe.editar, null) > -1
-            : _vm.perms.cafe.editar
+          checked: Array.isArray(_vm.perms.cafes.editar)
+            ? _vm._i(_vm.perms.cafes.editar, null) > -1
+            : _vm.perms.cafes.editar
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.editar,
+            var $$a = _vm.perms.cafes.editar,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "editar", $$a.concat([$$v]))
+                $$i < 0 &&
+                  _vm.$set(_vm.perms.cafes, "editar", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "editar",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "editar", $$c)
+              _vm.$set(_vm.perms.cafes, "editar", $$c)
             }
           }
         }
@@ -75302,36 +75337,37 @@ exports.default = _default;
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.perms.cafe.borrar,
-            expression: "perms.cafe.borrar"
+            value: _vm.perms.cafes.borrar,
+            expression: "perms.cafes.borrar"
           }
         ],
         attrs: { type: "checkbox" },
         domProps: {
-          checked: Array.isArray(_vm.perms.cafe.borrar)
-            ? _vm._i(_vm.perms.cafe.borrar, null) > -1
-            : _vm.perms.cafe.borrar
+          checked: Array.isArray(_vm.perms.cafes.borrar)
+            ? _vm._i(_vm.perms.cafes.borrar, null) > -1
+            : _vm.perms.cafes.borrar
         },
         on: {
           change: function($event) {
-            var $$a = _vm.perms.cafe.borrar,
+            var $$a = _vm.perms.cafes.borrar,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.perms.cafe, "borrar", $$a.concat([$$v]))
+                $$i < 0 &&
+                  _vm.$set(_vm.perms.cafes, "borrar", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
-                    _vm.perms.cafe,
+                    _vm.perms.cafes,
                     "borrar",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.perms.cafe, "borrar", $$c)
+              _vm.$set(_vm.perms.cafes, "borrar", $$c)
             }
           }
         }
@@ -76256,7 +76292,7 @@ render._withStripped = true
         
       }
     })();
-},{"../config":"js/config.js","../store":"js/store.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarProveedores.vue":[function(require,module,exports) {
+},{"../config":"js/config.js","../store":"js/store.js","../encode":"js/encode.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/EditarProveedores.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -77253,8 +77289,12 @@ var _EditarVenta = _interopRequireDefault(require("./componentes/EditarVenta"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_vue.default.use(_vueRouter.default);
+// En este archivo se definen todas las rutas disponibles en la aplicación
+_vue.default.use(_vueRouter.default); // Importas todos los componentes
 
+
+// Se define un router con las rutas en un array (routes) con su respectiva ruta
+// y componente
 var Router = new _vueRouter.default({
   routes: [{
     path: '/',
@@ -77467,7 +77507,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: null,
+            _scopeId: "data-v-71a832",
             functional: true
           };
         })());
@@ -77487,9 +77527,13 @@ render._withStripped = true
         }
 
         
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
       }
     })();
-},{"vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/App.vue":[function(require,module,exports) {
+},{"_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../node_modules/vue-hot-reload-api/dist/index.js","vue":"../../node_modules/vue/dist/vue.runtime.esm.js"}],"js/componentes/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -77511,7 +77555,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 var _default = {
-  name: 'App',
+  name: "App",
   components: {
     Nav: _Nav.default
   },
@@ -77552,7 +77596,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-e88e91",
+            _scopeId: null,
             functional: undefined
           };
         })());
@@ -77591,6 +77635,9 @@ var _App = _interopRequireDefault(require("./componentes/App.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Importas las librerías necesarias
+// Importas los archivos donde defines rutas y la aplicación
+// Se crea una nueva instancia de Vue con el router y la aplicación
 new _vue.default({
   router: _router.default,
   render: function render(h) {
