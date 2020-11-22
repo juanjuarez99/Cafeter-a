@@ -19,6 +19,11 @@
       <li v-if="props.permisos.ventas.ver">
         <router-link to="/ventas">Ventas</router-link>
       </li>
+      <li v-if="props.permisos.usuarios.ver && props.permisos.cafes.ver &&
+        props.permisos.proveedores.ver && props.permisos.tamanos.ver &&
+        props.permisos.caja.ver && props.permisos.ventas.ver">
+        <router-link to="/cantidades">Cantidades</router-link>
+      </li>
     </ul>
   </nav>
 </template>

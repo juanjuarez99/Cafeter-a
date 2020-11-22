@@ -1,5 +1,19 @@
 <template>
-    <div></div>
+  <div>
+    <h1>Cantidades</h1>
+    <table>
+      <thead>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+      </thead>
+      <tbody>
+        <tr v-for="dato in datos">
+          <td>{{dato.tipo}}</td>
+          <td>{{dato.cantidad}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -16,11 +30,6 @@ export default {
   mounted() {
     this.datos = [];
   },
-  watch: {
-    direccion() {
-      this.actualizar();
-    },
-  },
   async created() {
     this.app.connection = new WebSocket(config.websocket);
     this.app.connection.onmessage = (event) => {
@@ -31,24 +40,13 @@ export default {
   },
   methods: {
     async actualizar() {
-      const res = await fetch(`${be}/${this.direccion}/${this.$route.params.id}`, {
+      const res = await fetch(`${be}/cantidades`, {
         headers: {
           "x-token": this.app.token,
         },
       });
       const data = await res.json();
-      this.datos = data[0];
-            console.log(this.datos)
-
-//se oculta contraseña
-      if (this.datos[0]['contraseña']) {
-        this.datos[0]['contraseña'] = undefined
-      }
-      if (data.length > 0) {
-        this.encabezados = Object.keys(data[0][0]).filter(e => e != 'contraseña');
-      } else {
-        this.encabezados = [];
-      }
+      this.datos = data;
     },
   },
 };

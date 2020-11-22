@@ -21,6 +21,7 @@ import EditarProveedores from './componentes/EditarProveedores';
 import EditarTamaños from './componentes/EditarTamaños';
 import EditarCaja from './componentes/EditarCaja';
 import EditarVenta from './componentes/EditarVenta';
+import Cantidades from './componentes/Cantidades.vue';
 
 // Se define un router con las rutas en un array (routes) con su respectiva ruta
 // y componente
@@ -74,6 +75,7 @@ const Router = new VueRouter({
     { path: '/ventas/:id/editar', component: EditarVenta },
     { path: '/', component: Login },
     { path: '/dashboard', component: Dashboard },
+    { path: '/cantidades', component: Cantidades },
   ],
 });
 
