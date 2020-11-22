@@ -88,6 +88,7 @@ const Tamaños = require('./rutas/tamaños');
 const Caja = require('./rutas/caja');
 const Ventas = require('./rutas/ventas');
 const Login = require('./rutas/login');
+const Cantidades = require('./rutas/cantidades');
 
 // Y las registramos en la aplicación
 Cafes(app, connection);
@@ -97,6 +98,7 @@ Tamaños(app, connection);
 Caja(app, connection);
 Ventas(app, connection);
 Login(app, connection);
+Cantidades(app, connection);
 
 // Por ultimo ponemos al servidor a trabajar
 const server = app.listen(port, () => {
