@@ -8,20 +8,21 @@ module.exports = function(app, connection) {
     .get(function(req, res) {
       // Manda una consulta a la base de datos para seleccionar todas las
       // entradas
-      connection.query('SELECT * from cafes', function(err, rows, fields) {
+      connection.query('CALL obtenerCafes', function(err, rows, fields) {
         if (err) {
           // Si existe un error nos lo manda
           res.json(err);
         }
         // Si no existe error nos manda los resultados
-        res.json(rows);
+        res.json(rows [0]);
       });
     })
     // Al realizar una petición con metodo POST
     .post(function(req, res) {
       console.log(req.body);
       // Manda una consulta al a base de datos para guardar los datos en esta
-      let consulta = `INSERT INTO \`cafes\` (\`cod_cafe\`, \`nombre\`, \`tamaño\`, \`precio\`, \`proveedor\`) VALUES (NULL, '${req.body.nombre}', '${req.body.tamaño}', '${req.body.precio}', '${req.body.proveedor}');`;
+      let consulta = `CALL crearCafes ('${req.body.nombre}', '${req.body.tamaño}', '${req.body.precio}', '${req.body.proveedor}')`
+      //let consulta = `INSERT INTO \`cafes\` (\`cod_cafe\`, \`nombre\`, \`tamaño\`, \`precio\`, \`proveedor\`) VALUES (NULL, '${req.body.nombre}', '${req.body.tamaño}', '${req.body.precio}', '${req.body.proveedor}');`;
       connection.query(consulta, function(err, rows, fields) {
         if (err) {
           // Si ocurrió un error, nos lo manda
@@ -41,7 +42,7 @@ module.exports = function(app, connection) {
       // Manda una consulta a la base de datos para seleccionar la entrada que
       // coincida con el ':id' proporcionado (req.params.id)
       connection.query(
-        `SELECT * from cafes WHERE cod_cafe = ${req.params.id}`,
+        `CALL obtenerCafe (${req.params.id})`,
         function(err, rows, fields) {
           if (err) {
             // Si hay error lo manda
@@ -56,7 +57,7 @@ module.exports = function(app, connection) {
     .put(function(req, res) {
       // Empieza a definir la consulta para editar los campos en la entrada en
       // la base de datos
-      let consulta = `UPDATE \`cafes\` SET `;
+      /*let consulta = `UPDATE \`cafes\` SET `;
 
       // Guarda el objeto original en la variable 'actual'
       let actual = req.body.original;
@@ -79,7 +80,16 @@ module.exports = function(app, connection) {
       }
       consulta = consulta.replace(/, $/, ' ');
       // Define dónde se hara el cambio
-      consulta += `WHERE \`cafes\`.\`cod_cafe\` = ${req.params.id}`;
+      consulta += `WHERE \`cafes\`.\`cod_cafe\` = ${req.params.id}`;*/
+      
+      let actual = req.body.original;
+      let consulta = 'CALL editarCafe(' +
+        (req.body.nombre && req.body.nombree != actual.nombre ? `'${req.body.nombre}', ` : '"", ') +
+        (req.body.tamaño && req.body.tamaño != actual.tamaño ? `'${req.body.tamaño}', ` : '"", ') +
+        (req.body.precio && req.body.precio != actual.precio ? `'${req.body.precio}', ` : '"", ') +
+        (req.body.proveedor && req.body.proveedor != actual.proveedor ? `'${req.body.proveedor}', ` : '"", ') +
+        (req.params.id ? req.params.id : '""') + ')';
+
       // Ejecuta la consulta
       connection.query(consulta, function(err, rows, fields) {
         if (err) {
@@ -93,7 +103,8 @@ module.exports = function(app, connection) {
     // En el metodo DELETE
     .delete(function(req, res) {
       // Define una consulta para borrar basade en el ':id'
-      let consulta = `DELETE FROM \`cafes\` WHERE \`cafes\`.\`cod_cafe\` = ${req.params.id}`;
+      let consulta = `CALL eliminarCafes ('${req.params.id}')`
+      //let consulta = `DELETE FROM \`cafes\` WHERE \`cafes\`.\`cod_cafe\` = ${req.params.id}`;
       // Ejecuta la consulta
       connection.query(consulta, function(err, rows, fields) {
         if (err) {

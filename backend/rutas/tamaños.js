@@ -9,7 +9,8 @@ module.exports = function (app, connection) {
       });
     })
     .post(function (req, res) {
-      let consulta = `INSERT INTO \`tamaños_cafe\` (\`cod_tamaño\`, \`nombre\`, \`relacion_precio\`) VALUES (NULL, '${req.body.nombre}', '${req.body.relacion_precio}')`
+      let consulta = `CALL crearTamano ('${req.body.nombre}', '${req.body.relacion_precio}')`
+      //let consulta = `INSERT INTO \`tamaños_cafe\` (\`cod_tamaño\`, \`nombre\`, \`relacion_precio\`) VALUES (NULL, '${req.body.nombre}', '${req.body.relacion_precio}')`
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)
@@ -28,7 +29,7 @@ module.exports = function (app, connection) {
       });
     })
     .put(function (req, res) {
-      let consulta = `UPDATE \`tamaños_cafe\` SET `
+      /*let consulta = `UPDATE \`tamaños_cafe\` SET `
       let actual = req.body.original
 
       if (req.body.nombre && req.body.nombre != actual.nombre) {
@@ -38,7 +39,15 @@ module.exports = function (app, connection) {
         consulta += `\`relacion_precio\` = '${req.body.relacion_precio}', `
       }
       consulta = consulta.replace(/, $/," ")
-      consulta += `WHERE \`tamaños_cafe\`.\`cod_tamaño\` = ${req.params.id}`
+      consulta += `WHERE \`tamaños_cafe\`.\`cod_tamaño\` = ${req.params.id}` */
+
+      let actual = req.body.original
+
+      let consulta = 'CALL editarTamano(' +
+        (req.body.nombre && req.body.nombre != actual.nombre ? `'${req.body.nombre}', ` : '"", ') +
+        (req.body.relacion_precio && req.body.relacion_precio != actual.relacion_precio ? `'${req.body.relacion_precio}', ` : '"", ') +
+        (req.params.id ? req.params.id : '""') + ')';
+
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)
@@ -47,7 +56,8 @@ module.exports = function (app, connection) {
       });
     })
     .delete(function (req, res) {
-      let consulta = `DELETE FROM \`tamaños_cafe\` WHERE \`tamaños_cafe\`.\`cod_tamaño\` = ${req.params.id}`
+      let consulta = `CALL eliminarTamano ('${req.params.id}')`
+      //let consulta = `DELETE FROM \`tamaños_cafe\` WHERE \`tamaños_cafe\`.\`cod_tamaño\` = ${req.params.id}`
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

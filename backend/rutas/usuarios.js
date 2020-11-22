@@ -3,11 +3,12 @@ const { encriptarContra } = require('../utils'
 module.exports = function (app, connection) {
   app.route('/usuarios')
     .get(function (req, res) {
-      connection.query('SELECT * from usuarios', function (err, rows, fields) {
+      connection.query('CALL obtenerUsuarios', function (err, rows, fields) {
         if (err) {
           res.json(err)
         }
-        res.json(rows.map((usuario) => {
+        console.log(rows)
+        res.json(rows[0].map((usuario) => {
           usuario["contraseña"] = undefined
           return usuario
         }))
@@ -25,7 +26,7 @@ module.exports = function (app, connection) {
         });
         return
       }
-      let consulta = `INSERT INTO \`usuarios\` (\`cod_usuarios\`, \`nombres\`, \`apellidos\`, \`nombre_usuario\`, \`contraseña\`, \`permisos\`) VALUES (NULL, '${req.body.nombres}', '${req.body.apellidos}', '${req.body.nombre_usuario}', '${contraEncriptada}', '${req.body.permisos}')`
+      let consulta = `CALL crearUsuario ('${req.body.nombres}', '${req.body.apellidos}', '${req.body.nombre_usuario}', '${contraEncriptada}', '${req.body.permisos}')`
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)
@@ -37,7 +38,7 @@ module.exports = function (app, connection) {
   app.route('/usuarios/:id')
     .get(function (req, res) {
 
-      connection.query(`SELECT * from usuarios WHERE cod_usuarios = ${req.params.id}`, function (err, rows, fields) {
+      connection.query(`CALL obtenerUsuario (${req.params.id}) `, function (err, rows, fields) {
         if (err) {
           res.json(err)
         }
@@ -51,17 +52,18 @@ module.exports = function (app, connection) {
       let contraEncriptada;
       try {
         contraEncriptada = await encriptarContra(req.body.contra)
-        
+
       } catch (err) {
         console.log(err)
-       /*  res.json({
-          status: "error",
-          msg: err
-        });
-        return */
+        /*  res.json({
+           status: "error",
+           msg: err
+         });
+         return */
       }
-      let consulta = `UPDATE \`usuarios\` SET `;
       let actual = req.body.original;
+      /* let consulta = `UPDATE \`usuarios\` SET `;
+      
 
       if (req.body.nombres && req.body.nombres != actual.nombres) {
         consulta += `\`nombres\` = '${req.body.nombres}', `;
@@ -79,7 +81,15 @@ module.exports = function (app, connection) {
         consulta += `\`permisos\` = '${req.body.permisos}', `;
       }
       consulta = consulta.replace(/, $/, ' ');
-      consulta += `WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`;
+      consulta += `WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`; */
+      
+      let consulta = 'CALL editarUsuario(' +
+        (req.body.nombres && req.body.nombres != actual.nombres ? `'${req.body.nombres}', ` : '"", ') +
+        (req.body.apellidos && req.body.apellidos != actual.apellidos ? `'${req.body.apellidos}', ` : '"", ') +
+        (req.body.nombre_usuario && req.body.nombre_usuario != actual.nombre_usuario ? `'${req.body.nombre_usuario}', ` : '"", ') +
+        (contraEncriptada ? `'${contraEncriptada}', ` : '"", ') +
+        (req.body.permisos && req.body.permisos != actual.permisos ? `'${req.body.permisos}', ` : '"", ') +
+        (req.params.id ? req.params.id : '""') + ')';
 
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
@@ -89,7 +99,8 @@ module.exports = function (app, connection) {
       });
     })
     .delete(function (req, res) {
-      let consulta = `DELETE FROM \`usuarios\` WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
+      let consulta = `CALL eliminarUsuario ('${req.params.id}')`
+      //let consulta = `DELETE FROM \`usuarios\` WHERE \`usuarios\`.\`cod_usuarios\` = ${req.params.id}`
       connection.query(consulta, function (err, rows, fields) {
         if (err) {
           res.json(err)

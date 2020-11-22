@@ -12262,8 +12262,8 @@ exports.default = _default;
 // Exportas un objeto con la configuración de la aplicación
 module.exports = {
   claveToken: '1234567890',
-  direccion_backend: 'http://192.168.0.16:3000',
-  websocket: 'ws://192.168.0.16:3001'
+  direccion_backend: 'http://192.168.1.87:3000',
+  websocket: 'ws://192.168.1.87:3001'
 };
 },{}],"js/store.js":[function(require,module,exports) {
 "use strict";
@@ -71878,28 +71878,7 @@ exports.default = _default;
                       ],
                       1
                     )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "td",
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "button",
-                        attrs: {
-                          to:
-                            "/" +
-                            _vm.direccion +
-                            "/" +
-                            dato[Object.keys(dato)[0]]
-                        }
-                      },
-                      [_vm._v("Ver")]
-                    )
-                  ],
-                  1
-                )
+                  : _vm._e()
               ],
               2
             )
@@ -74520,22 +74499,15 @@ var _default = {
 
               case 5:
                 data = _context2.sent;
-                _this2.datos = data[0];
-                console.log(_this2.datos); //se oculta contraseña
-
-                if (_this2.datos[0]['contraseña']) {
-                  _this2.datos[0]['contraseña'] = undefined;
-                }
+                _this2.datos = data;
 
                 if (data.length > 0) {
-                  _this2.encabezados = Object.keys(data[0][0]).filter(function (e) {
-                    return e != 'contraseña';
-                  });
+                  _this2.encabezados = Object.keys(data[0]);
                 } else {
                   _this2.encabezados = [];
                 }
 
-              case 10:
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -77700,7 +77672,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50113" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58284" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

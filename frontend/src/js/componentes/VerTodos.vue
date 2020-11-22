@@ -22,6 +22,12 @@
               :to="`/${direccion}/${dato[Object.keys(dato)[0]]}/editar`"
             >Editar</router-link>
           </td>
+          <td>
+            <router-link
+              class="button"
+              :to="`/${direccion}/${dato[Object.keys(dato)[0]]}`"
+            >Ver</router-link>
+          </td>
         </tr>
       </tbody>
     </table>

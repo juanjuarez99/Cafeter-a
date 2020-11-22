@@ -1,10 +1,5 @@
 <template>
-  <div :key="direccion">
-      <div v-for="encabezado in encabezados" :key="encabezado">
-          <h1>{{encabezado}}</h1>
-          <p>{{datos[0][encabezado]}}</p>
-      </div>
-  </div>
+    <div></div>
 </template>
 
 <script>
@@ -13,16 +8,13 @@ const be = config.direccion_backend;
 import Store from "../store";
 
 export default {
-  name: "VerUno",
-  props: ["direccion"],
+  name: "Cantidades",
   data: () => ({
     datos: [],
-    encabezados: [],
     app: Store.app,
   }),
   mounted() {
     this.datos = [];
-    this.encabezados = [];
   },
   watch: {
     direccion() {
